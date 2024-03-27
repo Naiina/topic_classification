@@ -87,7 +87,7 @@ def get_topics_idx(file,tup=False):
                     for i in range(int(start),int(end)):
                         l_topic_idx.append(i)
     
-    if tuple:
+    if tup:
         return l_tuple
     else:
         return l_topic_idx
@@ -135,10 +135,61 @@ def get_verb_idx(file):
                 if it.text[0] == "V":
                     idx = it.attrib["start"][1:]
                     l_v_idx.append(int(idx))
-            break
+            #break
     #print(l_noun_idx)
     return l_v_idx
 
+
+
+def get_ponct_idx(file):
+    #l_files = os.listdir(pcc2_data_folder)
+    l_ponct_idx = []
+    tree = ET.parse(file)
+    root = tree.getroot()
+    #nb = 0
+    for elem in root.iter('tier'):
+        d = elem.attrib
+        if "pos" in d.values():
+            for it in elem.iter("event"):
+                if it.text[-1] == ".":
+                    idx = it.attrib["start"][1:]
+                    l_ponct_idx.append(int(idx))
+            #break
+    #print(l_noun_idx)
+    return l_ponct_idx
+
+def rel_position_top_in_sentence(file):
+    l_main_idx = []
+    l_tags =  ["NN","NE","PPER","PDS"]
+    l_top_idx = get_topics_idx(file)
+
+    for idx in l_top_idx:
+        tag = get_pos_of_idx(file,idx)
+        if tag in l_tags:
+            l_main_idx.append(idx)
+    #print("all top idx: ",l_top_idx)
+    #print("main idx",l_main_idx)
+
+
+    l_ponct = get_ponct_idx(file)
+    l_rel_pos = []
+    for top_idx in l_main_idx:
+        for i,elem in enumerate(l_ponct):
+            if  elem > top_idx:
+                if i==0: start = 0
+                else: start=l_ponct[i-1]
+                end = elem
+                break
+        #print(start,end)
+        rel_pos = (top_idx-start)/(end-start)
+        l_rel_pos.append(rel_pos)
+    #print(l_rel_pos)
+    if len(l_rel_pos)>0:
+        return np.mean(l_rel_pos)
+    else:
+        return None
+
+            
 
 
 def create_label_list(file,data_size,nb_zeros,nb_ones):
@@ -211,6 +262,99 @@ def get_nb_topic_all_files(pcc2_data_folder):
     
     return l_topic_tok
 
+def get_pos_of_idx(file,idx):
+    tree = ET.parse(file)
+    root = tree.getroot()
+        
+    for elem in root.iter('tier'):
+        d = elem.attrib
+        if "pos" in d.values():
+                for it in elem.iter("event"):
+                    if str(idx) == it.attrib["start"][1:]:
+                     return it.text
+    return None
+
+def get_nb_tag(data_folder):
+    l_files = os.listdir(data_folder)
+    #l_files = ["maz-4282.exb","maz-10207.exb"]
+    l_pos =  ["NN","NE","PPER","PDS"]
+    d_count = {"NN":0,"NE":0,"PPER":0,"PDS":0}
+
+    for elem in l_files:
+
+        file = data_folder+"/"+elem
+        tree = ET.parse(file)
+        root = tree.getroot()    
+        
+        for elem in root.iter('tier'):
+            d = elem.attrib
+            if "pos" in d.values():
+                    for it in elem.iter("event"):
+                        if it.text in l_pos:
+                            d_count[it.text]+=1
+                    
+    return d_count
+
+def get_main_elem_topic_cluster(start,l_pos_topic):
+    l = ["NN","NE","PPER","PDS"]
+    l_main = []
+    for i,elem in enumerate(l_pos_topic):
+        if elem in l:
+            l_main.append(elem)
+    return l_main
+
+def count_pos_all_files(data_folder):
+
+    #main pos in topics
+    l_dir = os.listdir(data_folder)
+    #l_dir = ["maz-4282.exb","maz-10207.exb"]
+    l_tags = ["NN","NE","PPER","PDS"]
+    d_count_topic = {"NN":0,"NE":0,"PPER":0,"PDS":0}
+    l_unclear = []
+    for elem in l_dir:
+        file = data_folder+"/"+elem
+        d_main,d_unclear = main_elem_topic_file(file)
+        for (l_all,l_main) in d_main.values():
+            #print(l_main)
+            for t in l_main:
+                d_count_topic[t]+=1
+        l_unclear.append((elem,d_unclear))
+        if len(d_unclear) >0:
+            print (elem,d_unclear)
+    
+    return d_count_topic,l_unclear
+
+
+def main_elem_topic_file(file):
+    d_pos = get_pos_of_topics(file)
+    d_unclear = {}
+    d_main = {}
+    for start in d_pos:
+        l_main = get_main_elem_topic_cluster(start,d_pos[start])
+        if l_main == []:
+            d_unclear[start] = d_pos[start]
+        else:
+            d_main[start]=(d_pos[start],l_main)
+    return d_main, d_unclear
+
+
+
+
+
+def get_pos_of_topics(file):
+    #return lists of lists, each list containing the labels of a topic set
+    l_tup = get_topics_idx(file,tup=True)
+    d_pos = {}
+    for (start,end) in l_tup:
+        l_pos = []
+        for idx in range(int(start),int(end)):
+            pos = get_pos_of_idx(file,idx)
+            l_pos.append(pos)
+        d_pos[start] = l_pos
+    return d_pos
+
+
+    return None
 
 def get_weight(pcc2_data_folder):
     print("probably buggy")
@@ -239,6 +383,8 @@ def get_nouns_all_files(pcc2_data_folder):
     l_tot = []
     for file in l_files:
         l_tot = l_tot + get_noun_idx(file)
+
+
 
 
 
@@ -275,12 +421,6 @@ def plot_pkl(loss_file):
 
     axis[1, 3].plot(d_test["l_f_score_test"]) 
     axis[1, 3].set_title("test set F1 score") 
-
-    
-
-    
-
-
 
     plt.show() 
 
@@ -324,7 +464,7 @@ def check_all_topic_are_nn(pcc2_data_folder):
     empty_all = 0
     empty_nn = 0
     for elem in l_files:
-        print(elem)
+        #print(elem)
         file = pcc2_data_folder + "/" + elem
         l_nn = get_noun_idx(file)
         l_top_tuple = get_topics_idx(file,tup=True)
@@ -338,8 +478,8 @@ def check_all_topic_are_nn(pcc2_data_folder):
             
             inter_nn = S_top.intersection(S_nn)
             inter_all = S_top.intersection(S_v_nn)
-            print(inter_nn)
-            print(inter_all)
+            #print(inter_nn)
+            #print(inter_all)
             if len(inter_nn)==0:
                 empty_nn+=1
             if len(inter_all)==0:
@@ -355,11 +495,53 @@ def check_all_topic_are_nn(pcc2_data_folder):
 #if __name__ == 'main':
     
    
-l_batch = [16,32]
-l_lr = [5e-6, 2e-5, 5e-5]
-l_batch = [32,64]
+#l_batch = [16,32]
+#l_lr = [5e-6, 2e-5, 5e-5]
+#l_batch = [32,64]
 #l_lr = [5e-6, 2e-5]
-for batch in l_batch:
-    for lr in l_lr:
-        plot_pkl("loss/loss_grid_search_lr_"+str(lr)+"_bs_"+str(batch)+"_10ep.pkl")
+#for batch in l_batch:
+#    for lr in l_lr:
+#        plot_pkl("loss/loss_grid_search_lr_"+str(lr)+"_bs_"+str(batch)+"_10ep.pkl")
 
+#file = "pcc2_data/maz-4282.exb"
+#d = get_pos_of_topics(file)
+#d_main,d_unclear = main_elem_topic_file(file)
+#print("main",d_main,"unclear",d_unclear)
+
+
+
+def ratios(pcc2_data_folder):
+    l_tag = ["NN","NE","PPER","PDS"]
+    d_top,l_unclear = count_pos_all_files(pcc2_data_folder)
+    d_all = get_nb_tag(pcc2_data_folder)
+    d_ratio = {}
+    for tag in l_tag:
+        if d_all[tag] == 0:
+            d_ratio[tag]=0
+        else:
+            d_ratio[tag] = d_top[tag]/d_all[tag]
+    d_top["all"]=sum([d_top[tag] for tag in l_tag])
+    d_all["all"]=sum([d_all[tag] for tag in l_tag])
+    d_ratio["all"]=d_top["all"]/d_all["all"]
+
+    return d_ratio,d_top,d_all,l_unclear
+
+
+#file = "pcc2_data/maz-4282.exb"
+
+data_folder = "pcc2_data"
+l_dir = os.listdir(data_folder)
+rel = 0
+i = 0
+for elem in l_dir:
+    file = data_folder+"/"+elem
+    x = (rel_position_top_in_sentence(file))
+    if x != None:
+        i+=1
+        rel+=x
+print(rel/i)
+
+#for i,elem in enumerate(l_rel):
+#    if type(elem) != float:
+#        print(i,type(elem))
+#print(np.mean(l_rel))
