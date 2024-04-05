@@ -92,7 +92,7 @@ def get_topics_idx(file,tup=False):
     else:
         return l_topic_idx
     
-def get_noun_idx(file):
+def get_noun_idx(file,l_tags):
     #l_files = os.listdir(pcc2_data_folder)
     l_noun_idx = []
     tree = ET.parse(file)
@@ -102,7 +102,7 @@ def get_noun_idx(file):
         d = elem.attrib
         if "pos" in d.values():
             for it in elem.iter("event"):
-                if it.text == "NN" or it.text == "NE" or it.text == "PPER":
+                if it.text in l_tags:
                     idx = it.attrib["start"][1:]
                     l_noun_idx.append(int(idx))
             break
@@ -158,9 +158,44 @@ def get_ponct_idx(file):
     #print(l_noun_idx)
     return l_ponct_idx
 
-def rel_position_top_in_sentence(file):
+def token_list(file,idx_start,idx_end):
+    tree = ET.parse(file)
+    root = tree.getroot()
+    #nb = 0
+    l_tok = ""
+    l_lab = []
+    for elem in root.iter('tier'):
+        d = elem.attrib
+        if "tok" in d.values():
+            for it in elem.iter("event"):
+                #if it.text[-1] == ".":
+                #    idx = it.attrib["start"][1:]
+                #    l_ponct_idx.append(int(idx))
+                if int(it.attrib["start"][1:]) in range(idx_start,idx_end+1):
+                    l_tok = l_tok+" "+it.text
+                    
+    return l_tok
+
+def cut_data_into_sentences(file,labels,data_max_lenght):
+    max_lenght = 0
+    l_ponct_idx = get_ponct_idx(file)
+    l_ponct_idx = [-1]+l_ponct_idx
+    l_sent = []
+    l_lab = []
+    for i in range(len(l_ponct_idx)-1):
+        l_sent.append( token_list(file,l_ponct_idx[i]+1,l_ponct_idx[i+1]))
+        non_pad_lab = labels[l_ponct_idx[i]+1:l_ponct_idx[i+1]+1]
+        pad_lab = non_pad_lab + [-100]*(data_max_lenght-len(non_pad_lab))
+        max_lenght =  max(len(non_pad_lab), max_lenght)
+        l_lab.append(pad_lab)
+    
+    return l_sent,l_lab, max_lenght
+
+
+
+def rel_position_top_in_sentence(file,l_tags):
     l_main_idx = []
-    l_tags =  ["NN","NE","PPER","PDS"]
+    #l_tags =  ["NN","NE","PPER","PDS"]
     l_top_idx = get_topics_idx(file)
 
     for idx in l_top_idx:
@@ -192,13 +227,13 @@ def rel_position_top_in_sentence(file):
             
 
 
-def create_label_list(file,data_size,nb_zeros,nb_ones):
+def create_label_list(file,data_size,l_tags):
     #labels: 0 for nouns/proper nouns/pronouns which are not topics, 
     #1 for the nouns/proper nouns/pronouns which are topics. 
     #-100 otherwise 
     sent,d_sent = get_d_sentence_pcc2(file)
     l_topic_idx = get_topics_idx(file)
-    l_noun_idx = get_noun_idx(file)
+    l_noun_idx = get_noun_idx(file,l_tags)
     #print("topic",l_topic_idx)
     #print("nouns",l_noun_idx)
     #l_label = [0]#corresponds to the begining token
@@ -206,18 +241,18 @@ def create_label_list(file,data_size,nb_zeros,nb_ones):
     for i in range(data_size-2): 
         if i in l_topic_idx and i in l_noun_idx:
             l_label.append(1)
-            nb_ones+=1
+            #nb_ones+=1
         elif i in l_noun_idx:
             l_label.append(0)
-            nb_zeros+=1
+            #nb_zeros+=1
         else:
             l_label.append(-100)
     #l_label.append(0) #to match the end token
-    return l_label,nb_zeros, nb_ones
+    return l_label
 
-def verify_label_list(file):
+def verify_label_list(file,l_tags):
     sent,d_sent = get_d_sentence_pcc2(file)
-    l_label = create_label_list(file)
+    l_label = create_label_list(file,l_tags)
     for i,elem in enumerate(l_label):
         if elem == 1:
             print(d_sent["T"+str(i)])
@@ -295,20 +330,22 @@ def get_nb_tag(data_folder):
                     
     return d_count
 
-def get_main_elem_topic_cluster(start,l_pos_topic):
-    l = ["NN","NE","PPER","PDS"]
+
+
+def get_main_elem_topic_cluster(start,l_pos_topic,l_tags):
+    #l = ["NN","NE","PPER","PDS"]
     l_main = []
     for i,elem in enumerate(l_pos_topic):
-        if elem in l:
+        if elem in l_tags:
             l_main.append(elem)
     return l_main
 
-def count_pos_all_files(data_folder):
+def count_pos_all_files(data_folder,l_tags):
 
     #main pos in topics
     l_dir = os.listdir(data_folder)
     #l_dir = ["maz-4282.exb","maz-10207.exb"]
-    l_tags = ["NN","NE","PPER","PDS"]
+    #l_tags = ["NN","NE","PPER","PDS"]
     d_count_topic = {"NN":0,"NE":0,"PPER":0,"PDS":0}
     l_unclear = []
     for elem in l_dir:
@@ -325,12 +362,12 @@ def count_pos_all_files(data_folder):
     return d_count_topic,l_unclear
 
 
-def main_elem_topic_file(file):
+def main_elem_topic_file(file,l_tags):
     d_pos = get_pos_of_topics(file)
     d_unclear = {}
     d_main = {}
     for start in d_pos:
-        l_main = get_main_elem_topic_cluster(start,d_pos[start])
+        l_main = get_main_elem_topic_cluster(start,d_pos[start],l_tags)
         if l_main == []:
             d_unclear[start] = d_pos[start]
         else:
@@ -356,33 +393,15 @@ def get_pos_of_topics(file):
 
     return None
 
-def get_weight(pcc2_data_folder):
-    print("probably buggy")
-    l_noun= get_noun_idx(pcc2_data_folder)
-    l_topic = get_nb_topic_all_files(pcc2_data_folder)
 
-    nb_tot_nouns = sum(l_noun)
-    nb_tot_topic = sum(l_topic)
-
-    pos_weight = nb_tot_nouns / (nb_tot_topic * 2)
-    neg_weight = nb_tot_nouns / ((nb_tot_nouns-nb_tot_topic) * 2)
-    
-    weight_tensor = torch.tensor([pos_weight,neg_weight])
-    return weight_tensor
 
 def compute_weight(nb_zeros, nb_ones):
     tot = nb_zeros + nb_ones
     pos_weight = tot / (nb_ones * 2)
     neg_weight = tot / (nb_zeros * 2)
     
-    weight_tensor = torch.tensor([neg_weight,pos_weight])
+    weight_tensor = torch.tensor([pos_weight,neg_weight])
     return weight_tensor
-
-def get_nouns_all_files(pcc2_data_folder):
-    l_files = os.listdir(pcc2_data_folder)
-    l_tot = []
-    for file in l_files:
-        l_tot = l_tot + get_noun_idx(file)
 
 
 
@@ -458,35 +477,9 @@ def compute_accuracy(loss_file):
     d_test_scores = {"l_precision_test":l_precision_test,"l_recall_test":l_recall_test,"l_f_score_test":l_f_score_test,"loss_test":d_loss["loss_test"]}
     return d_train_scores, d_test_scores
 
-def check_all_topic_are_nn(pcc2_data_folder):
-    print("To fix")
-    l_files = os.listdir(pcc2_data_folder)
-    empty_all = 0
-    empty_nn = 0
-    for elem in l_files:
-        #print(elem)
-        file = pcc2_data_folder + "/" + elem
-        l_nn = get_noun_idx(file)
-        l_top_tuple = get_topics_idx(file,tup=True)
-        l_v = get_verb_idx(file)
-        for start,end in l_top_tuple:
-            l_idx_top = range(start,end)
-            S_top = set(l_idx_top)
-            S_nn = set(l_nn)
-            S_v = set(l_v)
-            S_v_nn = S_nn.union(S_v)
-            
-            inter_nn = S_top.intersection(S_nn)
-            inter_all = S_top.intersection(S_v_nn)
-            #print(inter_nn)
-            #print(inter_all)
-            if len(inter_nn)==0:
-                empty_nn+=1
-            if len(inter_all)==0:
-                empty_all+=1
-        print(empty_all-empty_nn)
-            
-    print(empty_nn/empty_all)
+
+ 
+
 
 
 #label = create_label_list("pcc2_data/maz-4282.exb",100)
@@ -510,9 +503,9 @@ def check_all_topic_are_nn(pcc2_data_folder):
 
 
 
-def ratios(pcc2_data_folder):
+def ratios(pcc2_data_folder,l_tags):
     l_tag = ["NN","NE","PPER","PDS"]
-    d_top,l_unclear = count_pos_all_files(pcc2_data_folder)
+    d_top,l_unclear = count_pos_all_files(pcc2_data_folder,l_tags)
     d_all = get_nb_tag(pcc2_data_folder)
     d_ratio = {}
     for tag in l_tag:
@@ -527,21 +520,21 @@ def ratios(pcc2_data_folder):
     return d_ratio,d_top,d_all,l_unclear
 
 
-#file = "pcc2_data/maz-4282.exb"
+"""
+file = "pcc2_data/maz-4282.exb"
 
-data_folder = "pcc2_data"
-l_dir = os.listdir(data_folder)
-rel = 0
-i = 0
-for elem in l_dir:
-    file = data_folder+"/"+elem
-    x = (rel_position_top_in_sentence(file))
-    if x != None:
-        i+=1
-        rel+=x
-print(rel/i)
+l_tok = token_list(file,2,8)
+print(l_tok)
 
-#for i,elem in enumerate(l_rel):
-#    if type(elem) != float:
-#        print(i,type(elem))
-#print(np.mean(l_rel))
+
+
+
+data_max_lenght = 500
+l_tags = ["NN"]
+sent,d_sent = get_d_sentence_pcc2(file)
+labels,nb_zeros, nb_ones = create_label_list(file,data_max_lenght,1,1,l_tags)
+l_sent,l_lab = cut_data_into_sentences(file,sent,labels)
+print(l_sent)
+print(l_lab)
+"""
+
