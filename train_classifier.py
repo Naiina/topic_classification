@@ -33,12 +33,15 @@ BERT_DIM = 768
 #lang = "fr"
 load_bert = True
 weighted_loss = False
-debug = False
+debug = True
 early_stopping = False
 nept = True
 to_do = False
 
-pcc2_data_folder = "pcc2_data"
+if debug:
+    pcc2_data_folder = "pcc2_data"
+else: 
+    pcc2_data_folder = "pcc2_data_debug"
 
 
 
@@ -59,8 +62,8 @@ print("learning rate:", l_lr)
 
 
 if debug:
-    data_max_lenght_sent = 7
-    data_max_lenght_file = 7
+    data_max_lenght_sent = 10
+    data_max_lenght_file = 30
     l_batch = [2]
     #l_lr = [10e-3]
     nb_epochs = 2
@@ -109,11 +112,11 @@ def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,debug,l_
         max_lenght = max(max_lenght_one,max_lenght)
     print("max_lenght_sequ",max_lenght)
 
-    if debug:
-        l_sent_train = ["the cat ate the mouse.","I.","the cat ate the mouse the mouse the mouse.","I am."]
-        l_labels_train = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
-        l_sent_test = ["the cat ate the mouse.","I am green and blue.","the cat ate the mouse.","I am green and blue."]
-        l_labels_test = [[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0]]
+    #if debug:
+    #    l_sent_train = ["the cat ate the mouse.","I.","the cat ate the mouse the mouse the mouse.","I am."]
+    #    l_labels_train = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+    #    l_sent_test = ["the cat ate the mouse.","I am green and blue.","the cat ate the mouse.","I am green and blue."]
+    #    l_labels_test = [[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0]]
     
     
     return l_sent_train,l_labels_train, l_sent_test,l_labels_test
