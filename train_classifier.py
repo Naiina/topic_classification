@@ -35,8 +35,8 @@ load_bert = True
 weighted_loss = False
 debug = False
 early_stopping = False
-nept = False
-
+nept = True
+to_do = False
 
 pcc2_data_folder = "pcc2_data"
 
@@ -47,6 +47,7 @@ parser.add_argument('--out_file', type=str)
 parser.add_argument('--lr_file', type=str)
 args = parser.parse_args()
 out_file = args.out_file
+
 if type(args.lr_file)==str:
     lr_file = "l_lr/"+args.lr_file
     with open(lr_file, 'r') as openfile:   
@@ -58,19 +59,21 @@ print("learning rate:", l_lr)
 
 
 if debug:
-    data_max_lenght = 7
+    data_max_lenght_sent = 7
+    data_max_lenght_file = 7
     l_batch = [2]
     #l_lr = [10e-3]
     nb_epochs = 2
 else:
     #data_max_lenght = max(get_nb_tok_all_files(pcc2_data_folder))
-    data_max_lenght = 60 #max nb of tokens in a sentence 
-    nb_epochs = 100
-    l_batch = [1]
+    data_max_lenght_file = 600
+    data_max_lenght_sent = 80 #max nb of tokens in a sentence 
+    nb_epochs = 40
+    l_batch = [64]
     print("batch_size", l_batch)
 
 
-def get_data(pcc2_data_folder,data_max_lenght,debug,l_tags):
+def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,debug,l_tags):
     l_files = os.listdir(pcc2_data_folder)
     random.shuffle(l_files)
     train_size = int(len(l_files)*0.8)
@@ -85,8 +88,8 @@ def get_data(pcc2_data_folder,data_max_lenght,debug,l_tags):
     for elem in l_files_train:
         file = pcc2_data_folder+"/"+elem
         #sent,d_sent = get_d_sentence_pcc2(file)
-        labels = create_label_list(file,data_max_lenght,l_tags)
-        ll_sent, ll_lab, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght)
+        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        ll_sent, ll_lab, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
         max_lenght = max(max_lenght_one,max_lenght)
         #for elem in ll_sent:
         l_sent_train=l_sent_train+ll_sent
@@ -96,14 +99,16 @@ def get_data(pcc2_data_folder,data_max_lenght,debug,l_tags):
     for elem in l_files_test:
         file = pcc2_data_folder+"/"+elem
         #sent,d_sent = get_d_sentence_pcc2(file)
-        labels = create_label_list(file,data_max_lenght,l_tags)
-        ll_sent_test, ll_lab_test, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght)
+        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        #print(labels)
+        ll_sent_test, ll_lab_test, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
         #for elem in ll_sent_test:
         l_sent_test=l_sent_test+ll_sent_test
         #for elem in ll_lab_test:
         l_labels_test=l_labels_test+ll_lab_test
         max_lenght = max(max_lenght_one,max_lenght)
     print("max_lenght_sequ",max_lenght)
+
     if debug:
         l_sent_train = ["the cat ate the mouse.","I.","the cat ate the mouse the mouse the mouse.","I am."]
         l_labels_train = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
@@ -183,19 +188,20 @@ def align_labels(tok_batch,t_labels):
             previous_word_idx = word_idx
         l_aligned_labels.append(label_ids)
         #print("label_ids",label_ids)
+        #print("label :",label)
+        #print("word_idx",word_ids)
         #exit()
         
     return torch.tensor(l_aligned_labels)
 
 
-def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_file,load_bert=False,weighted_loss=True,debug=False):
+def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent,data_max_lenght_file,out_file,load_bert=False,weighted_loss=True,debug=False):
                 
     if load_bert:
         #tokenizer = AutoTokenizer.from_pretrained("FacebookAI/xlm-roberta-base")
         #model = XLMRobertaModel.from_pretrained("FacebookAI/xlm-roberta-base")
         tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-multilingual-cased")
         model = BertForTokenClassification.from_pretrained("google-bert/bert-base-multilingual-cased")
-
         print("model loaded")
     else:
         tokenizer = None
@@ -203,9 +209,9 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
         print("run without loading bert")
 
     l_tags = ["NN","NE","PPER","PDS"]
-    l_sent_train,l_labels_train, l_sent_test,l_labels_test = get_data(pcc2_data_folder,data_max_lenght,debug,l_tags)
-    print(l_sent_train[3])
-    print(l_labels_train[3])
+    l_sent_train,l_labels_train, l_sent_test,l_labels_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,debug,l_tags)
+    #print(l_sent_train[3])
+    #print(l_labels_train[3])
     #exit()
     
 
@@ -270,7 +276,7 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
                     return True
             return False
     early_stopper = EarlyStopper(patience=3, min_delta=0.02)
-
+    bool_print = True
     for epoch in tqdm(range(nb_epochs), desc="epoch" ):
 
         #early_stop = 0
@@ -279,17 +285,12 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
 
         dataset_train = LabelDataset(l_sent_train,l_labels_train)
         dataloader_train = dataset_train.get_dataloader(batch_size) 
-        #ll = next(iter(train_dataloader))
-        train_features, train_labels = next(iter(dataloader_train))
-        print(" train_features, train_labels", train_features, train_labels)
         l_loss_train = []
-        #exit()
 
         dataset_test = LabelDataset(l_sent_test,l_labels_test)
         
         dataloader_test = dataset_test.get_dataloader(batch_size,shuffle=False) 
-        #print("dataset_train",dataset_test[0])
-        #exit()
+
 
         l_loss_test = []
         model.train()
@@ -299,21 +300,24 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
         l_all_pred_one_ep_test = []
 
         for sent_batch, label_batch in dataloader_train:
-            print("TODO random samples")
-
+            if to_do:
+                print("TODO random samples")
+            
             tok_batch = tokenizer(sent_batch, return_tensors="pt", padding=True) 
-            print("padding in the dataloader: Data collator")
-            print("label_batch",label_batch)
+            if to_do:
+                print("padding in the dataloader: Data collator")
             t_labels = torch.stack(label_batch, dim=1)
-
-            print("sent",sent_batch)
-            print("tokenized sent", tok_batch)
-            print("t_labels",t_labels)
             t_aligned_labels = align_labels(tok_batch,t_labels)
-            print(t_aligned_labels)
-            #print(tok_batch,t_labels)
-            exit()
-
+            if bool_print:
+                print("exemple 0")
+                print("sentence: ",sent_batch[0])
+                print("non aligned labels: ",t_labels[0])
+                print("tokenized sentence: ",tok_batch["input_ids"][0])
+                print("words_ids: ", tok_batch.word_ids(batch_index=0))
+                print("aligned labels",t_aligned_labels[0])
+                #exit()
+                
+                bool_print = False
             
             if load_bert:
                 out_logits = model(**tok_batch).logits # tensor of size nb_batch * nb_tok * nb_of_classes
@@ -324,6 +328,9 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
             out_logits = torch.permute(out_logits, (0, 2, 1))
             
             sent_batch_size = out_logits.size()[-1]
+            #print(predicted_labels)
+            #print(t_aligned_labels)
+            #exit()
             loss = criterion(out_logits, t_aligned_labels) 
             #l_f_score_train = compute_f1_score(predicted_labels,t_aligned_labels)
             optimizer.zero_grad()
@@ -444,7 +451,7 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_
 for batch_size in tqdm(l_batch, desc="batch size"):
     for lr in tqdm(l_lr, desc="lr"):
         out_file_lr = "loss/"+out_file+"_lr_"+str(lr)+"_bs_"+str(batch_size)+".pkl"
-        run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght,out_file_lr,load_bert,weighted_loss,debug)
+        run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent,data_max_lenght_file,out_file_lr,load_bert,weighted_loss,debug)
 
 
 
