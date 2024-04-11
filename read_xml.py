@@ -6,6 +6,8 @@ import pickle
 import matplotlib.pyplot as plt
 from torcheval.metrics.functional import multiclass_f1_score
 from sklearn.metrics import precision_recall_fscore_support
+import json
+import random
 
 
 #tree = ET.parse('52FRF-G38GNT-07M0400.xml')
@@ -17,8 +19,62 @@ from sklearn.metrics import precision_recall_fscore_support
 #for elem in root.iter('event'):
 
     #print(elem.text)
+def detach_and_flatten(l_tensor):
+    n_pred = np.array([])
+    for t in l_tensor:
+        t_flat = torch.flatten(t)
+        #print(t_flat)
+        n_flat = t_flat.detach().numpy()
+        #print(n_flat)
+        n_pred = np.concatenate((n_pred, n_flat), axis=None)
+        #print(n_pred)
+    return n_pred
 
+def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags):
+    l_files = os.listdir(pcc2_data_folder)
+    random.shuffle(l_files)
+    train_size = int(len(l_files)*0.8)
+    l_files_train = l_files[:train_size]
+    l_files_test = l_files[train_size:]
+    l_sent_train = []
+    l_labels_train = []
+    l_sent_test = []
+    l_labels_test = []
+    l_id_train = []
+    l_id_test = [] 
+    
+    max_lenght = 0
+    for elem in l_files_train:
+        file = pcc2_data_folder+"/"+elem
+        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        ll_sent_train, ll_lab_train, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+        max_lenght = max(max_lenght_one,max_lenght)
+        l_sent_train=l_sent_train+ll_sent_train
+        l_labels_train=l_labels_train+ll_lab_train
 
+        for i in range(len(ll_sent_train)):
+            l_id_train.append(str(i)+elem[4:-4])
+    
+    for elem in l_files_test:
+        file = pcc2_data_folder+"/"+elem
+        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        ll_sent_test, ll_lab_test, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+        l_sent_test=l_sent_test+ll_sent_test
+        l_labels_test=l_labels_test+ll_lab_test
+        max_lenght = max(max_lenght_one,max_lenght)
+
+        for i in range(len(ll_sent_test)):
+            l_id_test.append(str(i)+elem[4:-4])
+    print("max_lenght_sequ",max_lenght)
+
+    #if debug:
+    #    l_sent_train = ["the cat ate the mouse.","I.","the cat ate the mouse the mouse the mouse.","I am."]
+    #    l_labels_train = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+    #    l_sent_test = ["the cat ate the mouse.","I am green and blue.","the cat ate the mouse.","I am green and blue."]
+    #    l_labels_test = [[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0]]
+
+    return l_sent_train,l_labels_train,l_id_train, l_sent_test,l_labels_test,l_id_test
+    
 
 
 def get(property,file):
@@ -485,21 +541,6 @@ def compute_accuracy(loss_file):
 #label = create_label_list("pcc2_data/maz-4282.exb",100)
 #print(label)
 
-#if __name__ == 'main':
-    
-   
-#l_batch = [16,32]
-#l_lr = [5e-6, 2e-5, 5e-5]
-#l_batch = [32,64]
-#l_lr = [5e-6, 2e-5]
-#for batch in l_batch:
-#    for lr in l_lr:
-#        plot_pkl("loss/loss_grid_search_lr_"+str(lr)+"_bs_"+str(batch)+"_10ep.pkl")
-
-#file = "pcc2_data/maz-4282.exb"
-#d = get_pos_of_topics(file)
-#d_main,d_unclear = main_elem_topic_file(file)
-#print("main",d_main,"unclear",d_unclear)
 
 
 
@@ -519,6 +560,37 @@ def ratios(pcc2_data_folder,l_tags):
 
     return d_ratio,d_top,d_all,l_unclear
 
+
+
+def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
+
+    labels = create_label_list(file,data_max_lenght_file,l_tags)
+    ll_sent, ll_lab, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+    count = 0
+    prompt = ""
+    for i,sent in enumerate(ll_sent):
+        sent_split = sent.split(" ")
+        top = " "
+        labels = ll_lab[i]
+
+        if 1 in labels:
+            idx_top = ll_lab[i].index(1)
+            #print(idx_top)
+            top = sent_split[idx_top+1]        
+            prompt = prompt +"In the sentence: \""+sent+"\", \""+top+"\" is the topic. \n"
+            count+=1
+        if count >4:
+            break
+
+    full_prompt =  prompt + "\nCould you generate 10 more examples of sentences indicating their topics?"
+    print(full_prompt)
+    #exit()
+
+    json_object = json.dumps(full_prompt,ensure_ascii=False)
+    with open("prompts.json", "w") as outfile:
+        outfile.write(json_object)
+
+    
 
 """
 file = "pcc2_data/maz-4282.exb"

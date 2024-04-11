@@ -14,13 +14,14 @@ import torch.nn as nn
 import numpy as np
 import torch.optim as optim
 import torch.utils.data as data
-from read_xml import create_label_list, get_d_sentence_pcc2, compute_weight, get_nb_tok_all_files, get_nb_topic_all_files, cut_data_into_sentences
+from read_xml import detach_and_flatten, get_data, create_label_list, get_d_sentence_pcc2, compute_weight, get_nb_tok_all_files, get_nb_topic_all_files, cut_data_into_sentences
 import os
 import random
 import neptune
 from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 import json
+from hugging_face_utils import compute_metrics_hg
 
 
 #from transformers import AutoTokenizer, XLMRobertaModel
@@ -39,9 +40,10 @@ nept = True
 to_do = False
 
 if debug:
-    pcc2_data_folder = "pcc2_data"
-else: 
     pcc2_data_folder = "pcc2_data_debug"
+else: 
+    pcc2_data_folder = "pcc2_data"
+    nept = False
 
 
 
@@ -76,50 +78,7 @@ else:
     print("batch_size", l_batch)
 
 
-def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,debug,l_tags):
-    l_files = os.listdir(pcc2_data_folder)
-    random.shuffle(l_files)
-    train_size = int(len(l_files)*0.8)
-    l_files_train = l_files[:train_size]
-    l_files_test = l_files[train_size:]
-    l_sent_train = []
-    l_labels_train = []
-    l_sent_test = []
-    l_labels_test = []
-    
-    max_lenght = 0
-    for elem in l_files_train:
-        file = pcc2_data_folder+"/"+elem
-        #sent,d_sent = get_d_sentence_pcc2(file)
-        labels = create_label_list(file,data_max_lenght_file,l_tags)
-        ll_sent, ll_lab, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
-        max_lenght = max(max_lenght_one,max_lenght)
-        #for elem in ll_sent:
-        l_sent_train=l_sent_train+ll_sent
-        #for elem in ll_lab:
-        l_labels_train=l_labels_train+ll_lab
-    
-    for elem in l_files_test:
-        file = pcc2_data_folder+"/"+elem
-        #sent,d_sent = get_d_sentence_pcc2(file)
-        labels = create_label_list(file,data_max_lenght_file,l_tags)
-        #print(labels)
-        ll_sent_test, ll_lab_test, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
-        #for elem in ll_sent_test:
-        l_sent_test=l_sent_test+ll_sent_test
-        #for elem in ll_lab_test:
-        l_labels_test=l_labels_test+ll_lab_test
-        max_lenght = max(max_lenght_one,max_lenght)
-    print("max_lenght_sequ",max_lenght)
 
-    #if debug:
-    #    l_sent_train = ["the cat ate the mouse.","I.","the cat ate the mouse the mouse the mouse.","I am."]
-    #    l_labels_train = [[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
-    #    l_sent_test = ["the cat ate the mouse.","I am green and blue.","the cat ate the mouse.","I am green and blue."]
-    #    l_labels_test = [[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0,0,0]]
-    
-    
-    return l_sent_train,l_labels_train, l_sent_test,l_labels_test
 
 
 class LabelDataset(data.Dataset):
@@ -154,21 +113,6 @@ class _classifier(nn.Module):
     
 
 
-
-def get_path(d_lang,lang,UD_path):
-    return  UD_path+"/"+d_lang[lang] +"/"+d_lang[lang].lower() +"-test.conllu"
-
-
-def detach_and_flatten(l_tensor):
-    n_pred = np.array([])
-    for t in l_tensor:
-        t_flat = torch.flatten(t)
-        #print(t_flat)
-        n_flat = t_flat.detach().numpy()
-        #print(n_flat)
-        n_pred = np.concatenate((n_pred, n_flat), axis=None)
-        #print(n_pred)
-    return n_pred
 
 
 def align_labels(tok_batch,t_labels):
@@ -212,7 +156,7 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent
         print("run without loading bert")
 
     l_tags = ["NN","NE","PPER","PDS"]
-    l_sent_train,l_labels_train, l_sent_test,l_labels_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,debug,l_tags)
+    l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags)
     #print(l_sent_train[3])
     #print(l_labels_train[3])
     #exit()
@@ -255,6 +199,8 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent
         run_nept = neptune.init_run(
         project="naiina/topic-classifier-more-epochs",
         api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YzllNjM4MS0zYjBhLTQwNGUtOGM3Mi1hYjE3ZTVjOWVjMTgifQ==",
+       
+
         tags=["sentences"]
         ) 
         #params = {"batch_szie": batch_size, "lr": lr}
@@ -368,6 +314,8 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent
 
         score_train = precision_recall_fscore_support(torch.tensor(flat_labels),torch.tensor(flat_pred), average='micro',labels = np.array([0,1]))
         f1_score_train = f1_score( torch.tensor(flat_labels), torch.tensor(flat_pred), labels = np.array([0,1]),average = 'micro')
+        #compute_metrics_hg(torch.tensor(flat_labels),torch.tensor(flat_pred))
+
 
         if nept:
             run_nept["precision_train"].append((score_train[0]))
@@ -377,6 +325,9 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent
         
 
         model.eval()
+        if debug:
+            print("no test set eval")
+            break
 
         for sent_batch, label_batch in dataloader_test:
             #print(len(sent_batch),len(label_batch))
