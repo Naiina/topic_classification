@@ -579,12 +579,12 @@ def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
             top = sent_split[idx_top+1]        
             prompt = prompt +"In the sentence: \""+sent+"\", \""+top+"\" is the topic. \n"
             count+=1
-        if count >4:
-            break
+        #if count >4:
+        #    break
 
     full_prompt =  prompt + "\nCould you generate 10 more examples of sentences indicating their topics?"
     print(full_prompt)
-    #exit()
+    exit()
 
     json_object = json.dumps(full_prompt,ensure_ascii=False)
     with open("prompts.json", "w") as outfile:
@@ -592,8 +592,8 @@ def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
 
     
 
-"""
-file = "pcc2_data/maz-4282.exb"
+
+file = "pcc2_data/maz-3110.exb"
 
 l_tok = token_list(file,2,8)
 print(l_tok)
@@ -602,11 +602,12 @@ print(l_tok)
 
 
 data_max_lenght = 500
-l_tags = ["NN"]
+l_tags = ["NN","NE","PPER"]
+"""
 sent,d_sent = get_d_sentence_pcc2(file)
 labels,nb_zeros, nb_ones = create_label_list(file,data_max_lenght,1,1,l_tags)
 l_sent,l_lab = cut_data_into_sentences(file,sent,labels)
 print(l_sent)
 print(l_lab)
 """
-
+gpt_prompts(l_tags,file,500,80)

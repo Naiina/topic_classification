@@ -23,13 +23,13 @@ tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 model = BertForTokenClassification.from_pretrained(model_checkpoint, num_labels=2)
 print("model and tok loaded")
 
-label_all_tokens = False  #for a word tokenized into several tokens: should all the labels except the first one of this word be set as -100 during alignment?
+label_all_tokens = True  #for a word tokenized into several tokens: should all the labels except the first one of this word be set as -100 during alignment?
 
 debug = False
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=int)
+parser.add_argument('--lr', type=float)
 args = parser.parse_args()
 lr = args.lr
 
@@ -49,7 +49,7 @@ else:
     pcc2_data_folder = "pcc2_data"
     data_max_lenght_file = 600
     data_max_lenght_sent = 80 #max nb of tokens in a sentence
-    nb_epochs = 40
+    nb_epochs = 80
     batch_size = 64
     #lr = 5e-6
     weight_decay = 0.01
