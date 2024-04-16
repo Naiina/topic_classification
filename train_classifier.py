@@ -78,7 +78,39 @@ else:
     print("batch_size", l_batch)
 
 
+def compute_metrics(p):
+    predictions, labels = p
+    predictions = np.argmax(predictions, axis=2)
 
+    # Remove ignored index (special tokens)
+    true_predictions = [
+        [p for (p, l) in zip(prediction, label) if l != -100]
+        for prediction, label in zip(predictions, labels)
+    ]
+    true_labels = [
+        [l for (p, l) in zip(prediction, label) if l != -100]
+        for prediction, label in zip(predictions, labels)
+    ]
+    
+    #exit()
+    flat_pred = sum(true_predictions,[])
+    flat_labels = sum(true_labels, [])
+    print(flat_pred)
+    print("true_lab", flat_labels)
+
+    score = precision_recall_fscore_support(flat_labels,flat_pred, average='binary')
+    #f1= f1_score( flat_labels, flat_pred, average = 'micro')
+        #compute_metrics_hg(torch.tensor(flat_labels),torch.tensor(flat_pred))
+
+    results = metric.compute(predictions=true_predictions, references=true_labels)
+    d = {
+        "accuracy": results["overall_accuracy"],
+        "precision": score[0],
+        "recall": score[1],
+        "f1": score[2],
+    }
+
+    return d
 
 
 class LabelDataset(data.Dataset):
@@ -315,7 +347,7 @@ def run_experiment(pcc2_data_folder,nb_epochs,batch_size,lr,data_max_lenght_sent
         score_train = precision_recall_fscore_support(torch.tensor(flat_labels),torch.tensor(flat_pred), average='micro',labels = np.array([0,1]))
         f1_score_train = f1_score( torch.tensor(flat_labels), torch.tensor(flat_pred), labels = np.array([0,1]),average = 'micro')
         #compute_metrics_hg(torch.tensor(flat_labels),torch.tensor(flat_pred))
-
+        results = metric.compute(predictions=flat_pred, references=flat_labels)
 
         if nept:
             run_nept["precision_train"].append((score_train[0]))

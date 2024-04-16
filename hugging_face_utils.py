@@ -194,8 +194,6 @@ args = TrainingArguments(
 data_collator = DataCollatorForTokenClassification(tokenizer)
 
 
-
-
 trainer = Trainer(
     model,
     args,
