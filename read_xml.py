@@ -30,11 +30,20 @@ def detach_and_flatten(l_tensor):
         #print(n_pred)
     return n_pred
 
-def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags):
+def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_test,half=False):
+    #list of labels is same size, with 0,1,-100
+    #list of sentences only
+
+    #list file names for each set
     l_files = os.listdir(pcc2_data_folder)
     random.shuffle(l_files)
     train_size = int(len(l_files)*0.8)
-    l_files_train = l_files[:train_size]
+    if half:
+        l_files_train = l_files[:int(train_size/2)]
+    else:
+        l_files_train = l_files[:train_size]
+
+    print(len(l_files))
     l_files_test = l_files[train_size:]
     l_sent_train = []
     l_labels_train = []
@@ -46,22 +55,26 @@ def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags):
     max_lenght = 0
     for elem in l_files_train:
         file = pcc2_data_folder+"/"+elem
-        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        labels = create_label_list(file,data_max_lenght_file,l_tags_train)
         ll_sent_train, ll_lab_train, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
         max_lenght = max(max_lenght_one,max_lenght)
-        l_sent_train=l_sent_train+ll_sent_train
-        l_labels_train=l_labels_train+ll_lab_train
+        l_sent_train=l_sent_train+ll_sent_train #list of whole sentences, not cut into single words
+        l_labels_train=l_labels_train+ll_lab_train # list of labels, 0, 1, -100. all same size
 
         for i in range(len(ll_sent_train)):
             l_id_train.append(str(i)+elem[4:-4])
     
     for elem in l_files_test:
         file = pcc2_data_folder+"/"+elem
-        labels = create_label_list(file,data_max_lenght_file,l_tags)
+        labels = create_label_list(file,data_max_lenght_file,l_tags_test)
         ll_sent_test, ll_lab_test, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+        
         l_sent_test=l_sent_test+ll_sent_test
         l_labels_test=l_labels_test+ll_lab_test
         max_lenght = max(max_lenght_one,max_lenght)
+
+        print("ll",len(ll_lab_test))
+        print("l",len(l_labels_test))
 
         for i in range(len(ll_sent_test)):
             l_id_test.append(str(i)+elem[4:-4])
@@ -584,7 +597,7 @@ def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
 
     full_prompt =  prompt + "\nCould you generate 10 more examples of sentences indicating their topics?"
     print(full_prompt)
-    exit()
+    
 
     json_object = json.dumps(full_prompt,ensure_ascii=False)
     with open("prompts.json", "w") as outfile:
@@ -593,16 +606,19 @@ def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
     
 
 
-file = "pcc2_data/maz-3110.exb"
+file = "pcc2_data/maz-2609.exb"
 
-l_tok = token_list(file,2,8)
-print(l_tok)
+pcc_data_folder = "pcc2_data"
+
+#l_tok = token_list(file,2,8)
+#print(l_tok)
 
 
 
 
-data_max_lenght = 500
-l_tags = ["NN","NE","PPER"]
+data_max_lenght_file = 7
+data_max_lenght_sent = 7
+l_tags_train = ["NN","NE","PPER"]
 """
 sent,d_sent = get_d_sentence_pcc2(file)
 labels,nb_zeros, nb_ones = create_label_list(file,data_max_lenght,1,1,l_tags)
@@ -610,4 +626,17 @@ l_sent,l_lab = cut_data_into_sentences(file,sent,labels)
 print(l_sent)
 print(l_lab)
 """
-gpt_prompts(l_tags,file,500,80)
+#print(gpt_prompts(l_tags,file,500,80))
+
+
+labels = create_label_list(file,data_max_lenght_file,l_tags_train)
+ll_sent_train, ll_lab_train, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+#print(labels)
+#print(ll_sent_train, ll_lab_train, max_lenght_one)
+
+l_files = os.listdir(pcc_data_folder)
+#print(len(l_files))
+
+l1,l2,l3,l4,l5,l6 = get_data(pcc_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_train,half=False)
+print (l1[:15])
+print(l2[:15])

@@ -11,8 +11,10 @@ from transformers.integrations import NeptuneCallback
 from datasets.dataset_dict import DatasetDict
 from datasets import Dataset
 from sklearn.metrics import f1_score
-from sklearn.metrics import precision_recall_fscore_support
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 import argparse
+import json
+from gpt_data import gpt_to_list_for_hug_format
 
 
 
@@ -23,15 +25,20 @@ tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 model = BertForTokenClassification.from_pretrained(model_checkpoint, num_labels=2)
 print("model and tok loaded")
 
-label_all_tokens = True  #for a word tokenized into several tokens: should all the labels except the first one of this word be set as -100 during alignment?
+label_all_tokens = False  #for a word tokenized into several tokens: should all the labels except the first one of this word be set as -100 during alignment?
 
 debug = False
+gpt_aug_data = False
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float)
+parser.add_argument('--test_tag', type=str, default="all")
+parser.add_argument('--train_tag', type=str, default="all")
 args = parser.parse_args()
 lr = args.lr
+test_tag = args.test_tag
+train_tag = args.train_tag
 
 if debug:
     nept = False
@@ -103,8 +110,17 @@ def tokenize_and_align_labels(data,hug = False):
     tokenized_inputs["labels"] = labels
     return tokenized_inputs
 
-def hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags):
-    l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags)
+def hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half,gpt_aug_data=False):
+    l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half)
+    if gpt_aug_data:
+        with open('chatgpt_german_data.json') as f:
+            l_gpt_data = json.load(f)
+        shift = len(l_sent_train)
+        l_sent_train_gpt,l_labels_train_gpt, l_id_train_gpt = gpt_to_list_for_hug_format(l_gpt_data,shift)
+        l_sent_train = l_sent_train + l_sent_train_gpt
+        l_labels_train = l_labels_train + l_labels_train_gpt
+        l_id_train = l_id_train + l_id_train_gpt
+    
     d_train =  Dataset.from_dict({"id": l_id_train, "tokens": l_sent_train, "labels": l_labels_train})
     d_test =  Dataset.from_dict({"id": l_id_test, "tokens": l_sent_test, "labels": l_labels_test})
     #d_val = {"id": [], "tokens": [], "labels": []}
@@ -116,6 +132,7 @@ def hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l
 
 def compute_metrics(p):
     predictions, labels = p
+    #print(predictions, labels)
     predictions = np.argmax(predictions, axis=2)
 
     # Remove ignored index (special tokens)
@@ -123,36 +140,53 @@ def compute_metrics(p):
         [p for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
+    #true_predictions = np.array(true_predictions, dtype=np.int8)
     true_labels = [
         [l for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
-    
-    #exit()
+    #true_labels = np.array(true_labels, dtype=np.int8)
+
     flat_pred = sum(true_predictions,[])
     flat_labels = sum(true_labels, [])
-    print(flat_pred)
-    print("true_lab", flat_labels)
+    #print(flat_pred)
+    #print("true_lab", flat_labels)
 
     score = precision_recall_fscore_support(flat_labels,flat_pred, average='binary')
+    accuracy =accuracy_score(flat_labels,flat_pred,)
     #f1= f1_score( flat_labels, flat_pred, average = 'micro')
         #compute_metrics_hg(torch.tensor(flat_labels),torch.tensor(flat_pred))
 
-    results = metric.compute(predictions=true_predictions, references=true_labels)
-    d = {
-        "accuracy": results["overall_accuracy"],
+    #print("pred", true_predictions)
+    #print("lab",true_labels)
+    #results = metric.compute(predictions=true_predictions, references=true_labels)
+    #d = {
+    #    "accuracy": results["overall_accuracy"],
+    #    "precision": score[0],
+    #    "recall": score[1],
+    #    "f1": score[2],
+    #}
+    d = {"accuracy": accuracy,
         "precision": score[0],
         "recall": score[1],
         "f1": score[2],
     }
-
+    #print(d)
     return d
 
 
-datasets_hug = load_dataset("conll2003")  
-print(type(datasets_hug))
-l_tags = ["NN","NE","PPER","PDS"]
-datasets= hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags)
+#datasets_hug = load_dataset("conll2003")  
+#print(type(datasets_hug))
+#l_tags_train = ["NN","NE","PPER","PDS"]
+#l_tags_test = ["NN","NE","PPER","PDS"]
+d_tag = {"all":["NN","NE","PPER","PDS"], "nouns": ["NN"], "pnouns": ["NE"],"ppronouns":["PPER"],"dpronouns":["PDS"]}
+l_tags_test = d_tag[test_tag]
+l_tags_train = d_tag[train_tag]
+
+half_dataset = False
+if half_dataset:
+    print("Warning, only trained on half the dataset!")
+datasets= hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half_dataset,gpt_aug_data)
 print(type(datasets))
 #exit()
 print("pcc2 dataset loaded")
@@ -165,13 +199,13 @@ tokenized_datasets = datasets.map(tokenize_and_align_labels, batched=True)
 
 
 neptune_callback = NeptuneCallback(
+    #tags=["args-callback", "thin"]
     #project="naiina/topic-classifier-more-epochs",
     #api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YzllNjM4MS0zYjBhLTQwNGUtOGM3Mi1hYjE3ZTVjOWVjMTgifQ==",
-    tags=["hug_face_implementation"],
-    name="hug face implementation ",
-    description="adapted the hugging face token classif to topic classification",
+    #tags=["hug_face_implementation"],
+    #name="hug face implementation ",
+    #description="adapted the hugging face token classif to topic classification",
 )
-
 
 
 
@@ -186,7 +220,7 @@ args = TrainingArguments(
     per_device_eval_batch_size=batch_size,
     num_train_epochs=nb_epochs,
     weight_decay=weight_decay,
-    #report_to = None
+    #report_to = neptune
     #push_to_hub=True,
 )
 
@@ -203,7 +237,7 @@ trainer = Trainer(
     tokenizer=tokenizer,
     compute_metrics=compute_metrics,
     #callbacks=[neptune_callback]
-    callbacks = None
+    #callbacks = None
 )
 #run_nept = NeptuneCallback.get_run(trainer)
 #run_nept = neptune.init_run(
@@ -211,7 +245,20 @@ trainer = Trainer(
 #        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YzllNjM4MS0zYjBhLTQwNGUtOGM3Mi1hYjE3ZTVjOWVjMTgifQ==",
 #        tags=["hug_face_implementation"]
 #        ) 
+
+
+#run_nept = neptune.init_run(
+#    project="naiina/topic-classif-aug-data",
+#    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YzllNjM4MS0zYjBhLTQwNGUtOGM3Mi1hYjE3ZTVjOWVjMTgifQ==",
+#) 
+
 #params = {"batch_size": batch_size, "learning_rate": lr, "weight_decay": weight_decay}
+
+run = NeptuneCallback.get_run(trainer)
+
+#for i,elem in enumerate(l_tags_test):
+run["tags_test_set"] =test_tag
+
 
 #run_nept["parameters"] = params
 
@@ -220,5 +267,5 @@ trainer.evaluate()
 
 
 #if nept:
-#    run_nept.stop()
+#run_nept.stop()
 #tokenized_datasets = datasets.map(tokenize_and_align_labels, batched=True) #applies on val test and train set
