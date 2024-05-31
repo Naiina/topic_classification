@@ -1,7 +1,7 @@
 import json
 
 
-data = [
+data_tales = [
     {"sentence": "Die neuen Technologien verändern die Arbeitswelt.", "topic": "Technologien"},
     {"sentence": "In der Stadt gibt es viele Parks und Grünflächen.", "topic": "Parks"},
     {"sentence": "Das Interesse an Nachhaltigkeit wächst stetig.", "topic": "Nachhaltigkeit"},
@@ -818,6 +818,1891 @@ data = [
 
 
 
+data_UD = [
+
+    {
+      "sentence": "Der Friseursalon ist mit dem Bus sehr gut zu erreichen.",
+      "topic": "Friseursalon"
+    },
+    {
+      "sentence": "Terminfestlegung am Vortag war kein Problem; keine Wartezeiten.",
+      "topic": "Terminfestlegung"
+    },
+    {
+      "sentence": "Die Mitarbeiter waren sehr freundlich und es herrschte eine nette Stimmung im ganzen Salon.",
+      "topic": "Mitarbeiter"
+    },
+    {
+      "sentence": "Das Haareschneiden war auch schnell erledigt -- im Anschluss gab es sogar einen Kaffee --",
+      "topic": "Haareschneiden"
+    },
+    {
+      "sentence": "Die Arbeiten von Team VK sind nicht nur schön, sondern sind auch effektiv und führen zum Erfolg.",
+      "topic": "Arbeiten"
+    },
+    {
+      "sentence": "Zielorientiert.",
+      "topic": "Zielorientiert"
+    },
+    {
+      "sentence": "So profitiert nicht nur die Agentur, sondern in erster Linie der Kunde.",
+      "topic": "Kunde"
+    },
+    {
+      "sentence": "Hier ist Marketing eine Investition die sich auch auszahlt!",
+      "topic": "Marketing"
+    },
+    {
+      "sentence": "War jetzt in fast allen Tabledance Clubs in München wobei ich sagen muss, dass der neu eröffnete Laden Blackboxxx für Männer der mit Abstand beste Laden ist.",
+      "topic": "Laden"
+    },
+    {
+      "sentence": "Die Preise sind ok und die Frauen mindestens genau so hübsch wie im boobs, wo die Preise leider sehr unverschämt sind...",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "Die Stuttgarter Volksbank Homepage ist übersichtlich und vom Design erste Klasse.",
+      "topic": "Homepage"
+    },
+    {
+      "sentence": "Finden kann man wirklich alles was man sucht.",
+      "topic": "Finden"
+    },
+    {
+      "sentence": "Sollte man was über die Navigation nicht finden, so lässt sich ein bestimmtes Bankprodukt oder Information schnell über die Suchfunktion finden.",
+      "topic": "Suchfunktion"
+    },
+    {
+      "sentence": "Eine echt gelungene Seite.",
+      "topic": "Seite"
+    },
+    {
+      "sentence": "Ich war schon in vielen Cafés in aller Herren Länder, aber mit diesen herrlichen Torten und Kuchen muss sich das Café am Rosengarten vor keinem davon verstecken.",
+      "topic": "Café"
+    },
+    {
+      "sentence": "Von außen unscheinbar, schlicht und nicht in der besten Lage, aber die Kuchen und Torten sind dafür umso scheinbarer und leckerer.",
+      "topic": "Kuchen"
+    },
+    {
+      "sentence": "Das Sushi schmeckt immer hervorragend.",
+      "topic": "Sushi"
+    },
+    {
+      "sentence": "Unbedingt mal ausprobieren!!!!",
+      "topic": "ausprobieren"
+    },
+    {
+      "sentence": "Das Angebot ist reichlich und unerwartet vielseitig!",
+      "topic": "Angebot"
+    },
+    {
+      "sentence": "Die Bedienung war sehr aufmerksam und schnell.",
+      "topic": "Bedienung"
+    },
+    {
+      "sentence": "Dabei sitzt man drinnen wie draußen in angenehm freundlicher und ruhiger Umgebung.",
+      "topic": "Umgebung"
+    },
+    {
+      "sentence": "Ein lohnendes Sonntagsvergnügen!",
+      "topic": "Sonntagsvergnügen"
+    },
+    {
+      "sentence": "Neubau für viele Schulklassen vorhanden, also alles in Einwandfreiem Zustand.",
+      "topic": "Neubau"
+    },
+    {
+      "sentence": "Ein hervorragender Schulgarten in dem die Schüler einiges über die Natur lernen können.",
+      "topic": "Schulgarten"
+    },
+    {
+      "sentence": "Das Bild auf Google Maps ist veraltet!",
+      "topic": "Bild"
+    },
+    {
+      "sentence": "Diese Schule ist schon lange keine Bauststelle mehr!",
+      "topic": "Schule"
+    },
+    {
+      "sentence": "Positiv: Schöne Zimmer, alles sauber, freundliches Personal, gut eingerichtet.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Im April 09 hat mir meine Frau zum Geburtstag ein Seminar im Hotel Sonnenstrahl geschenkt.",
+      "topic": "Seminar"
+    },
+    {
+      "sentence": "Die Unterbringung im Doppelzimmer hat sie mir gleich mit dazugeschenkt -- als Überraschung.",
+      "topic": "Unterbringung"
+    },
+    {
+      "sentence": "Leider ist das Seminarhotel eine Enttäuschung.",
+      "topic": "Seminarhotel"
+    },
+    {
+      "sentence": "Die Zimmer sind total heruntergekommen, ungepflegt, veraltete Einrichtung, harte Matratzen und verwöhnt.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Das Hotel war wohl mal ein Sanatorium oder Krankenhaus und die Zimmer wurden nahezu unverändert übernommen.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Wie sich so eine Unterkunft als 3 Sterne Unterkunft bezeichnen darf ist mir ein Rätsel.",
+      "topic": "Unterkunft"
+    },
+    {
+      "sentence": "Wir haben uns übrigens 3 verschiedene Zimmer angesehen und alle waren eine Katastrophe.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Wir haben uns mehrfach beim Personal beschwert -- das Bett wurde zwar mit einer weiteren Matratze ausgestattet aber das hat nix gebracht.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "Bei der Abreise kam dann noch die böse Überraschung in Form von extrem überhöhten Übernachtungspreisen.",
+      "topic": "Übernachtungspreisen"
+    },
+    {
+      "sentence": "Nach langem Suchen endlich den richtigen gefunden!!!",
+      "topic": "Suchen"
+    },
+    {
+      "sentence": "Ich bin seit fast 5 Jahren auf der Suche nach jemandem gewesen, der mich nicht übers Ohr hauen wollte.",
+      "topic": "Suche"
+    },
+    {
+    "sentence": "Und dann bin ich auf Empfehlung einer sehr guten Freundin nach Dortmund gefahren um mich dort von Herrn Knauff behandeln zu lassen und kann nur sagen, dass das die beste Entscheidung gewesen ist.",
+      "topic": "Empfehlung"
+    },
+    {
+      "sentence": "Vielen Vielen Dank für die super professionelle Arbeit.",
+      "topic": "Arbeit"
+    },
+    {
+      "sentence": "Ich bin seit 3 Sitzungen in Behandlung und ich fühle mich super gut aufgehoben.",
+      "topic": "Behandlung"
+    },
+    {
+      "sentence": "Eine super professionelle Beratung und Risikoaufklärung, die nicht darauf abzielt das meiste Geld zu machen, sondern effektiv zu arbeiten.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Das Team ist super nett, ich fühle mich sehr gut aufgehoben und der Wohlfühlfaktor ist zu 100 % gegeben.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Ich bin sehr zufrieden!",
+      "topic": "Ich"
+    },
+    {
+      "sentence": "Auf jeden Fall zu empfehlen!",
+      "topic": "Empfehlen"
+    },
+    {
+      "sentence": "Besonders die professionelle Beratung und die individuell angepassten Behandlungen entsprechen dem, was ich unter bester Dienstleistungsqualität verstehe.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Meine Erfahrung sagt: Sehr zu empfehlen.",
+      "topic": "Erfahrung"
+    },
+    {
+      "sentence": "Dortmunds erste Wahl für dauerhafte Haarentfernung und Wellness.",
+      "topic": "Dortmunds"
+    },
+    {
+      "sentence": "Der mechanische Trackpad - Klick meines Macbook Pro funktionierte eines Tages nicht mehr.",
+      "topic": "Trackpad"
+    },
+    {
+      "sentence": "Das Personal ist sehr nett und versuchen einem gleich zu helfen.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "Sehr beruhigend ein solches Geschäft in der Nähe zu haben...",
+      "topic": "Geschäft"
+    },
+    {
+      "sentence": "Was für eine Bruchbude..",
+      "topic": "Bruchbude"
+    },
+    {
+      "sentence": "Das Hotel sah aus als wäre es kurz davor abgerissen zu werden.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Leider habe ich die anderen beiden Bewertungen zu spät gesehen und gebucht, da ich dringend ein Hotel in der Gegend brauchte und der Preis ok war.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Nun weis ich warum.",
+      "topic": "Ich"
+    },
+    {
+      "sentence": "Kurze Wartezeiten und Arbeiten die selbst andere Zahnärzte bewundern.",
+      "topic": "Arbeiten"
+    },
+    {
+      "sentence": "Leider nur Privat Patienten.",
+      "topic": "Patienten"
+    },
+    {
+      "sentence": "Pizza hat die Qualität eines besseren Tiefkühlproduktes aus dem Supermarkt.",
+      "topic": "Pizza"
+    },
+    {
+      "sentence": "Der Salat ist mit einem mayonnaiselastigem Dressing verunstaltet.",
+      "topic": "Salat"
+    },
+    {
+      "sentence": "Die Pizzen schmecken nicht wirklich gut das meiste scheint aus der Dose zu kommen.",
+      "topic": "Pizzen"
+    },
+    {
+      "sentence": "Im italienischen Restaurant Pinnocchio kann man nicht nur wunderbar Pizza essen, auch alle anderen Gerichte schmecken hervorragend.",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Die Preise sind akzeptabel und für die Gegend absolut üblich.",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "So ist das Restaurant auch familienfreundlich.",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Es bietet nette Atmosphäre und eine motivierte und zuvorkommende Bedienung.",
+      "topic": "Atmosphäre"
+    },
+    {
+      "sentence": "Patient trägt seit 3 Monaten Kontaktlinsen.",
+      "topic": "Patient"
+    },
+    {
+      "sentence": "Wünscht Untersuchung im Hinblick auf Gegenanzeigen und Hinderungsgründe für das Tragen von Kontaktlinsen.",
+      "topic": "Untersuchung"
+    },
+    {
+      "sentence": "Wünscht Untersuchung auf evtl. bereits aufgetretene Schädigung des Auges.",
+      "topic": "Untersuchung"
+    },
+    {
+      "sentence": "Für dieses Jahr plane ich noch ein paar kleine Anschaffungen, die ich mir auf jeden Fall wieder hier holen werde.",
+      "topic": "Anschaffungen"
+    },
+    {
+      "sentence": "Auch ich musste suchen (1. OG) und fand es dann.",
+      "topic": "suchen"
+    },
+    {
+      "sentence": "Was soll ich sagen... netter Empfang, Möbel nicht die neusten aber OK.",
+      "topic": "Empfang"
+    },
+    {
+      "sentence": "Auf Essen musste nicht lange gewartet werden und es war sehr sehr lecker.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Preise waren für das Essen günstig.",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "Ich kann es nur weiter empfehlen.",
+      "topic": "es"
+    },
+    {
+      "sentence": "Habe dann New China entdeckt.",
+      "topic": "New China"
+    },
+    {
+      "sentence": "Auf dem Weg dort hin natürlich gleich mal dran vorbeigefahren....",
+      "topic": "Weg"
+    },
+    {
+      "sentence": "Als ich endlich da war, viel mir das Schild 13 Jahre 'New China' auf.",
+      "topic": "Schild"
+    },
+    {
+      "sentence": "Die Innenausstattung sah auch ein wenig in die Jahre gekommen aus.",
+      "topic": "Innenausstattung"
+    },
+    {
+      "sentence": "Dann habe ich bei der Bedienung zwei mal das Buffet und etwas zu trinken bestellt, welches sofort an meinem Tisch war.",
+      "topic": "Buffet"
+    },
+    {
+      "sentence": "Das Buffet war reichhaltig, die Auslage nicht überfüllt, wurde sofort nachgefüllt wenn etwas leer wurde.",
+      "topic": "Buffet"
+    },
+    {
+      "sentence": "Die Bedienung war sehr aufmerksam und zuvorkommend.",
+      "topic": "Bedienung"
+    },
+    {
+      "sentence": "Als ich satt war hatte ich das gefühl nur noch herausrollen zu können, woran nicht zu letzt die Gebackenen Bananen mit Honig schuld waren.",
+      "topic": "Gefühl"
+    },
+    {
+      "sentence": "DIe Kanzlei Seehofer ist eine super Kanzlei!",
+      "topic": "Kanzlei Seehofer"
+    },
+    {
+      "sentence": "Sie hat mir zu meinem Recht geholfen, als ich probleme mit einer Bank hatte.",
+      "topic": "Sie"
+    },
+    {
+      "sentence": "Gutes Hotel mit noch akzeptabler Küche.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Preis - Leistungsverhältnis jedoch eher schlecht.",
+      "topic": "Preis-Leistungsverhältnis"
+    },
+    {
+      "sentence": "Es lohnt sich!",
+      "topic": "Es"
+    },
+    {
+      "sentence": "Bevorzugt ausgeschenkt und verkauft werden hier im Weinkost Weine aus Deutschland, Schweiz und Österreich.",
+      "topic": "Weine"
+    },
+    {
+      "sentence": "Demnächst soll es hier sogar jeweils passend zur Saison Käsefondue und oder Grünkohl geben.",
+      "topic": "Käsefondue"
+    },
+    {
+      "sentence": "Man darf gespannt sein.",
+      "topic": "Man"
+    },
+    {
+      "sentence": "Wir kommen wieder.",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Die Musik war ok, das Publikum jung.",
+      "topic": "Musik"
+    },
+    {
+      "sentence": "Ich hatte mit sehr viel mehr gerechnet.",
+      "topic": "Ich"
+    },
+    {
+      "sentence": "An sich ist die Location gar nicht so schlecht, vielleicht ein bisschen klein aber ansonsten ganz schick.",
+      "topic": "Location"
+    },
+    {
+      "sentence": "Wegen dem Fahrstuhl dauert der Einlaß nämlich ziemlich lange.",
+      "topic": "Einlass"
+    },
+    {
+      "sentence": "Anfangs war es ganz cool.",
+      "topic": "Anfangs"
+    },
+    {
+      "sentence": "Der Ausblick von der Terrasse ist irgendwie der einzige der wirklich schön ist.",
+      "topic": "Ausblick"
+    },
+    {
+      "sentence": "Dieses kleine aber feine Hotel bietet sehr schöne Zimmer, das Badezimmer war nahezu neu und somit in einem tadellosen Zustand.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Für mich 10 von 10 Punkten -- TOP",
+      "topic": "Punkten"
+    },
+    {
+      "sentence": "ich bin recht oft in Hotels unterwegs.",
+      "topic": "Hotels"
+    },
+    {
+      "sentence": "Aber so schlecht und dreckig bin ich noch nie untergekommen.",
+      "topic": "untergekommen"
+    },
+    {
+      "sentence": "Gebacken wird direkt im Haus.",
+      "topic": "Gebacken"
+    },
+    {
+      "sentence": "Hier sieht man wirklich was man für seine Wohnung haben muss.",
+      "topic": "Wohnung"
+    },
+    {
+      "sentence": "Das andere Möbelhaus mit Geschichte und Zukunft.",
+      "topic": "Möbelhaus"
+    },
+    {
+      "sentence": "Geführt von einer Familie mit Herz!",
+      "topic": "Familie"
+    },
+    {
+      "sentence": "Sehr gemütlich, mit viel Platz für jede Feier.",
+      "topic": "Platz"
+    },
+    {
+      "sentence": "Wir gehen regelmäßigLogo? Experienced There.term caters",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Efes war eigentlich immer unser Stamm - Döner - Lieferant.",
+      "topic": "Efes"
+    },
+    {
+      "sentence": "Aber seit einiger Zeit schmeckt der Döner nicht mehr so lecker.",
+      "topic": "Döner"
+    },
+    {
+      "sentence": "Ich weiche dann oft auf Pizza oder Dönertasche aus.",
+      "topic": "Pizza"
+    },
+  
+    {
+      "sentence": "Ich wünsche dem neuen Team für die Saison 2010 einen vollen Erfolg.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Komme bald wieder!",
+      "topic": "Komme"
+    },
+    {
+      "sentence": "wir waren zu einer feierlichkeit mit insgesamt 4 paaren angereist und in allen belangen restlos zufrieden.",
+      "topic": "wir"
+    },
+    {
+      "sentence": "das essen ist sehr gut und auch das frühstück hatte alles was man für einen guten start in den tag braucht.",
+      "topic": "essen"
+    },
+    {
+      "sentence": "die umgebung lädt zum segeln ein.",
+      "topic": "umgebung"
+    },
+    {
+      "sentence": "Ein Nachmittag in Strassenhof fühlt sich an einem warmen Frühlingssonntag im April schon fast wie Urlaub an.",
+      "topic": "Nachmittag"
+    },
+    {
+      "sentence": "Super Essen und ein toller Biergarten!",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Ob im Sommer im Biergarten oder im Winter in der Stube, uns schmeckt's hier immer richtig gut!",
+      "topic": "Biergarten"
+    },
+    {
+      "sentence": "Deshalb kommen wir schon seit gut 20 Jahren immer wieder gerne zum Strassenhof!",
+      "topic": "Strassenhof"
+    },
+    {
+      "sentence": "Herr Reichel ist ein guter Arzt rund um die Suchtmedizin.",
+      "topic": "Herr Reichel"
+    },
+    {
+      "sentence": "Er besitzt nicht nur die Kompetenz der allg. Medizin, sondern ebenfalls der psychologischen Diagnostik.",
+      "topic": "Er"
+    },
+    {
+      "sentence": "Gekaufter Strauß war schon nach zwei Tagen in erbärmlicher 'Verfassung'.",
+      "topic": "Strauß"
+    },
+    {
+      "sentence": "Und dabei war er noch nicht mal richtig günstig.",
+      "topic": "er"
+    },
+    {
+      "sentence": "Ich war bei Frau Dr.Röder - Dischinger zur Behandlung (2 Monate Wartezeit) meiner Akne, die ich seit 13 Jahre habe.",
+      "topic": "Behandlung"
+    },
+    {
+      "sentence": "Leider hat mich diese Ärztin bitter enttäuscht.",
+      "topic": "Ärztin"
+    },
+    {
+      "sentence": "Trotz Termin musste ich 60 Minuten warten.",
+      "topic": "Termin"
+    },
+
+    {
+      "sentence": "Zeit nahm sie sich nur für ein kostenpflichtiges teures Hautkrebsscreening.",
+      "topic": "Zeit"
+    },
+
+    
+    {
+      "sentence": "Ich halte diese Ärztin fachlich für höchst inkompentent.",
+      "topic": "Ärztin"
+    },
+    {
+      "sentence": "Sie zeigte sich in Bezug auf Roaccutan zudem als sehr schlecht informiert.",
+      "topic": "Sie"
+    },
+    {
+      "sentence": "Heutzutage sollte jedem Arzt bekannt sein, dass diese Therapie nicht mehr zwangsläufig zum Selbstmord führt und je nach Krankheitsgrad auch verschieden stark dosiert werden kann.",
+      "topic": "Arzt"
+    },
+    {
+      "sentence": "Lediglich die Sprechstundenhilfen sind sehr entgegenkommend und engagiert.",
+      "topic": "Sprechstundenhilfen"
+    },
+    {
+      "sentence": "Leider nützt einem das wenig.",
+      "topic": "das"
+    },
+    {
+      "sentence": "Das Essen ist lecker, aber die Preise sind viel zu hoch.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Bei meinem ersten Termin wurde mir alles erklärt, ich habe einen persönlichen Trainingsplan bekommen und mir wurden die Geräte gezeigt.",
+      "topic": "Termin"
+    },
+    {
+      "sentence": "Sehr freundliche und geduldige Tanzlehrer.",
+      "topic": "Tanzlehrer"
+    },
+    {
+      "sentence": "Die Räumlichkeiten sind sehr schön und vor allem sehr sauber.",
+      "topic": "Räumlichkeiten"
+    },
+    {
+      "sentence": "Hier macht tanzen lernen richtig Spaß.",
+      "topic": "tanzen"
+    },
+    {
+      "sentence": "Ich kann Kay Jays nur jedem vollstens empfehlen.",
+      "topic": "Kay Jays"
+    },
+    {
+      "sentence": "Vielen Dank an das ganze Team.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Sehr nette Trainer, sehr sauber, gut zu erreichen und nicht zu teuer.",
+      "topic": "Trainer"
+    },
+    {
+      "sentence": "Danke an das ganze Team, habe viel gelernt und komme bestimmt wieder.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Kayjays Tanzmobil ist die erste Adresse in München wenn es um HipHop, Jazz Dance, Breakdance oder Bellydance tanzen lernen geht.",
+      "topic": "Kayjays Tanzmobil"
+    },
+    {
+      "sentence": "Freundliches und sehr vielseitiges Tanzlehrerteam.",
+      "topic": "Tanzlehrerteam"
+    },
+    {
+      "sentence": "Günstige Preise und viele unterschiedliche Tanzkurse",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "Die Tanzschule ist mit öffentlichen Verkehrsmitteln gut zu erreichen und für Autofahrer stehen viele kostenlose Parkplätze zur Verfügung.",
+      "topic": "Tanzschule"
+    },
+    {
+      "sentence": "Auf der sehr übersichtlich strukturierten Webseite dieser Tanzschule macht das Surfen Spaß und man findet schnell alle wichtigen Informationen.",
+      "topic": "Webseite"
+    },
+    {
+      "sentence": "Essen war ok.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Bedienung etwas gestresst, versuchte aber nett zu sein.",
+      "topic": "Bedienung"
+    },
+    {
+      "sentence": "Nichts für Familien.",
+      "topic": "Nichts"
+    },
+    {
+      "sentence": "Ich war wirklich enttäuscht.",
+      "topic": "Ich"
+    },
+    {
+      "sentence": "Das Studio sagt zwar, dass keine Termine vergeben werden, aber es werden Termine vorreserviert, wenn man so vorbeikommt und gerade alles besetzt ist.",
+      "topic": "Studio"
+    },
+    {
+      "sentence": "So haben Leute, die danach vorbeikommen, keine Chance, doch noch an eine Behandlung zu kommen.",
+      "topic": "Leute"
+    },
+
+    {
+      "sentence": "Warum dann nicht doch einen Terminkalender anbieten?",
+      "topic": "Terminkalender"
+    },
+    {
+      "sentence": "In meinem Land Brasilien funktioniert das besser!",
+      "topic": "Brasilien"
+    },
+    {
+      "sentence": "Da werden Termine vergeben, eingehalten und alle sind zufrieden.",
+      "topic": "Termine"
+    },
+    {
+      "sentence": "Wenn man bis 20h offen hat, sollten Kunden, die um 17 Uhr vorbeikommen, doch noch eine Chance haben...",
+      "topic": "Kunden"
+    },
+    {
+      "sentence": "Ich werde das Studio auf keinen Fall weiterempfehlen -- und in Bonn gibts die Konkurrenz, die ist genauso gut.",
+      "topic": "Studio"
+    },
+    {
+      "sentence": "Die Mitarbeiterin hat nicht so viele Informationen.",
+      "topic": "Mitarbeiterin"
+    },
+    {
+      "sentence": "Dann habe zwar reparieren gelassen aber ohne Leihgerät und monatelang warten.",
+      "topic": "reparieren"
+    },
+    {
+      "sentence": "Nachdem an meinem Fahrrad die Kette gerissen ist, habe ich es dahin gebracht und mir wurde versichert, dass es innerhalb von 5 Tagen repariert ist.",
+      "topic": "Fahrrad"
+    },
+    {
+      "sentence": "Die Herren wollten dann von mir Geld sehen, um das Fahrrad zu reparieren.",
+      "topic": "Herren"
+    },
+    {
+      "sentence": "Man muss dazu sagen, dass das Fahrrad 15 Jahre alt ist und ich bei der Abgabe gesagt habe, dass ich nur eine neue Kette haben möchte.",
+      "topic": "Fahrrad"
+    },
+    {
+      "sentence": "Ich habe meine Kette dann bei RADSPORT ALTIG reparieren lassen.",
+      "topic": "Kette"
+    },
+    {
+      "sentence": "Anstatt 30 Euro habe ich dann nur 18 bezahlt, und mein Fahrrad wurde in nur 10 Minuten repariert.",
+      "topic": "Fahrrad"
+    },
+    {
+      "sentence": "Ich kann nur jedem raten die Finger von diesem Laden zu lassen.",
+      "topic": "Laden"
+    },
+    {
+      "sentence": "Super Service!",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Hatte einen Platten, haben mir den neuen schlauch innerhalb von 10 min kostenlos eingebaut und zudem noch kleinere \"schäden\" des Fahrrades Repariert!",
+      "topic": "Schlauch"
+    },
+    {
+      "sentence": "Ich hab vor 4 Wochen unsere Fahrräder zur Reparatur gebracht, es war einiges zu machen.",
+      "topic": "Fahrräder"
+    },
+    {
+      "sentence": "Die Leute sind echt nett und haben Ahnung und die Reparaturen wurden flott durchgeführt.",
+      "topic": "Leute"
+    },
+    {
+      "sentence": "Wir waren jetzt 2 Wochen lang auf Radtour und keine Probleme gehabt.",
+      "topic": "Radtour"
+    },
+    {
+      "sentence": "Noch nie habe ich so schlechte Service gehabt als bei Biotopia.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Das Personal ist frech und wollte uns überhaupt nicht helfen.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "ich war allein dieses Jahr 4 mal in der Werkstatt mit meinem Fahrrad.",
+      "topic": "Werkstatt"
+    },
+    {
+      "sentence": "Über den Service kann man zwar nicht meckern, aber ich habe das Gefühl, dass die Reparatur selbst nur mittelmäßig ist.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "ich werde die Werkstatt jetzt wechseln.",
+      "topic": "Werkstatt"
+    },
+    {
+      "sentence": "Find ich super, dass endlich die Firma auf Google Maps eingetragen ist!",
+      "topic": "Firma"
+    },
+    {
+      "sentence": "Nette Beratung und sehr gute Preise, gutes Sortiment.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Hab bis jetzt immer was gefunden.",
+      "topic": "was"
+    },
+    {
+      "sentence": "Im Winter sind die Lammfellmützen zu empfehlen.",
+      "topic": "Lammfellmützen"
+    },
+    {
+      "sentence": "Top Qualität zum super Preis.",
+      "topic": "Qualität"
+    },
+    {
+      "sentence": "Dort alles bekommen was ich für meinen Verkauf gesucht habe, vielen Dank nochmals!",
+      "topic": "Verkauf"
+    },
+    {
+      "sentence": "Es ist ein Familienhotel mit sehr herzlicher Führung!",
+      "topic": "Familienhotel"
+    },
+    {
+      "sentence": "Die Zimmer sind sehr gemütlich und modern eingerichtet und man fühlt sich, als ob man Teil der Familie wäre!!!",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Die Hotelanlage ist sehr gepflegt und es wird viel Wert auf die noch so kleinen Details gelegt!",
+      "topic": "Hotelanlage"
+    },
+    {
+      "sentence": "Die Zimmer sind neu und liebevoll renoviert, mit großem Balkon, hellem Zimmer und wunderschönem Bad mit Whirlwanne!",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Wir werden auf Alle Fälle wieder nach Reischach ins Petrus fahren!",
+      "topic": "Petrus"
+    },
+    {
+      "sentence": "Dieses italienische Restaurant \"Piazza Italiana\" bekommt für den Service, die Speisen und das Ambiente volle 5 Sterne.",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Diese Lokalität ist wirklich zu Empfehlen.",
+      "topic": "Lokalität"
+    },
+    {
+      "sentence": "B & S ist ein Car - Audio - Spezialist wie man ihn nur hier findet!",
+      "topic": "Spezialist"
+    },
+    {
+      "sentence": "Ich habe hier meinen Alfa GT mit Lautsprechern, Endstufen und Subwoofern der deutschen Marke AMPIRE ausstatten lassen.",
+      "topic": "Alfa GT"
+    },
+    {
+      "sentence": "Ein richtig geiles Sound war das Ergebnis.",
+      "topic": "Sound"
+    },
+    {
+      "sentence": "Macht alles richtig viel Spaß!",
+      "topic": "Spaß"
+    },
+    {
+      "sentence": "Also es ist zwar schon 6 Jahre her, dass mein Mann und ich mit unserer damals 2jährigen Tochter dort übernachtet haben, aber wir können es nur allzugerne weiterempfehlen.",
+      "topic": "übernachtet"
+    },
+    {
+      "sentence": "Was will man mehr?",
+      "topic": "man"
+    },
+    {
+      "sentence": "Habe dort meine Bachelorarbeit binden lassen für die RFH Köln.",
+      "topic": "Bachelorarbeit"
+    },
+    {
+      "sentence": "Netter Service und gute Qualität.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Das Essen ist nicht schlecht, leider sind die Mitarbeiter in der Früh etwas unfreundlich.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "In der ComputerAkademie Rosenheim werden zertifizierte Trainings zu den Microsoft Office - Produkten angeboten.",
+      "topic": "Trainings"
+    },
+    {
+      "sentence": "Darüber hinaus gibt es Adobe - Trainings, Firmen-/Inhouse-Seminare sowie Coaching für 1-2 Personen.",
+      "topic": "Trainings"
+    },
+    {
+      "sentence": "Somit bin ich dann aufgestanden und gegangen.",
+      "topic": "aufgestanden"
+    },
+    {
+      "sentence": "Es gibt ja noch jede Menge andere Saloons in Nürnberg, wo man freundlich behandelt wird.",
+      "topic": "Saloons"
+    },
+    {
+      "sentence": "Sehr nette, dynamische und fachlich sehr gut ausgebildete Therapeutinnen.",
+      "topic": "Therapeutinnen"
+    },
+    {
+      "sentence": "Hier können wohl alle Krankheiten behandelt werden, man trifft Kinder und alte Menschen.",
+      "topic": "Krankheiten"
+    },
+    {
+      "sentence": "Durch die räumliche Nähe der einzelnen Praxen konnte ich am gleichen Vormittag zwei Termine wahrnehmen.",
+      "topic": "Praxen"
+    },
+    {
+      "sentence": "Zwei Praxen die sich in ihren Therapiemöglichkeiten sehr gut ergänzen.",
+      "topic": "Praxen"
+    },
+    {
+      "sentence": "Liebe Ergo - und Physiotherapeuten, macht weiter so!!",
+      "topic": "Ergo- und Physiotherapeuten"
+    },
+    {
+      "sentence": "Und wie es sich lohnt...!",
+      "topic": "es"
+    },
+    {
+      "sentence": "Obwohl die Firma Hummer sich selbst gerade im Umzug befand, wurden alle unsere Wünsche zu unserer vollsten Zufriedenheit umgesetzt.",
+      "topic": "Firma Hummer"
+    },
+    {
+      "sentence": "Wir haben uns Anfang Dez. entschlossen unser Wohn - und Esszimmer vollständig umgestalten zu lassen.",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Da meine Freundin und ich recht unterschiedliche Ideen hatten, haben wir uns dementsprechend beraten lassen.",
+      "topic": "Freundin und ich"
+    },
+    {
+      "sentence": "Wir haben den gesamten Fußboden erneuert und sämtliche Fenster mit neuen Vorhängen versehen.",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Das beste ist aber unsere 'neue' Couch.",
+      "topic": "Couch"
+    },
+    {
+      "sentence": "Unsere 'alte Garnitur' haben wir so liebgewonnen, daß wir uns entschlossen hatten sie komplett neu polstern lassen.",
+      "topic": "Garnitur"
+    },
+    {
+      "sentence": "Der Laden ist uns von Freunden empfohlen worden und wir werden diese Empfehlung bestimmt ebenfalls weitergeben.",
+      "topic": "Laden"
+    },
+    {
+      "sentence": "Das cafe ist einfach nur klasse.",
+      "topic": "cafe"
+    },
+    {
+      "sentence": "Ich bin total begeistert seitdem ich das letzte Jahr das erste Mal hier war.",
+      "topic": "Ich"
+    },
+    {
+      "sentence": "Die Bedienung ist total nett und klasse und das Essen ist der Hammer.",
+      "topic": "Bedienung"
+    },
+    {
+      "sentence": "Das Dolce ist ein kleines, gemütliches Cafe mit sehr schönem Ambiente.",
+      "topic": "Dolce"
+    },
+    {
+      "sentence": "Der Service ist super, die Mitarbeiter kompetent.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Alle waren hellauf begeistert von den kreativen und wunderschönen Ideen.",
+"topic": "Alle"
+    },
+    {
+      "sentence": "Sehr gute Fahrschule.",
+      "topic": "Fahrschule"
+    },
+    {
+      "sentence": "Nett, kompetent und dazu noch im Herzen Müggelheims.",
+      "topic": "Müggelheims"
+    },
+    {
+      "sentence": "Sehr zu empfehlen.",
+      "topic": "empfehlen"
+    },
+    {
+      "sentence": "Noch eine von den gemütlichen Tavernen in Oostende sehr zu empfehlen.",
+      "topic": "Tavernen"
+    },
+    {
+      "sentence": "Der Metzger des Vertrauens, nur hier wird mit Liebe geschlachtet!",
+      "topic": "Metzger"
+    },
+    {
+      "sentence": "Nie wieder, nicht zu empfehlen!",
+      "topic": "empfehlen"
+    },
+    {
+      "sentence": "Haben online bestellt, wie verlangt, und kein Essen erhalten.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Danke für die knurrenden Mägen, bestellen nun woanders.",
+      "topic": "Mägen"
+    },
+    {
+      "sentence": "Wir beauftragen das die Firma Ideengut Berroth schon seit vielen Jahren.",
+      "topic": "Firma Ideengut Berroth"
+    },
+    {
+      "sentence": "Wir sind mit der Arbeit und dem Service sehr zufrieden.",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Es werden immer wieder Konzepte vorgeschlagen, auf die wäre man selbst gar nicht gekommen.",
+      "topic": "Konzepte"
+    },
+    {
+      "sentence": "Ich war heute bei Frau Stoehr weil ich immer noch 'Wasser in den Ohren' hatte.",
+      "topic": "Frau Stoehr"
+    },
+    {
+      "sentence": "Sie war super freundlich und hat mich zwischen die Termine geschoben.",
+      "topic": "Sie"
+    },
+    {
+      "sentence": "Sie hörte aufmerksam zu, war sehr freundlich und zuvorkommend.",
+      "topic": "Sie"
+    },
+    {
+      "sentence": "Man fühlte sich sehr gut bei ihr aufgehoben.",
+      "topic": "Man"
+    },
+    {
+      "sentence": "Das Ende vom Lied ist, dass ich eine Gehörgangentzündung auf beiden Ohren habe.",
+      "topic": "Ende"
+    },
+    {
+      "sentence": "Bereits letzte Woche war ich bei einer anderen HNO - Ärztin, wegen meiner Beschwerden.",
+      "topic": "HNO-Ärztin"
+    },
+    {
+      "sentence": "Bei Frau Stoehr bin ich nun gut aufgehoben und dankbar, dass meinem Problem nun geholfen wird.",
+      "topic": "Frau Stoehr"
+    },
+    {
+      "sentence": "Ich kann Frau Stoehr nur weiter empfehlen.",
+      "topic": "Frau Stoehr"
+    },
+    {
+      "sentence": "Durch die räumliche Nähe der einzelnen Praxen konnte ich am gleichen Vormittag zwei Termine wahrnehmen.",
+      "topic": "Praxen"
+    },
+    {
+      "sentence": "Zwei Praxen die sich in ihren Therapiemöglichkeiten sehr gut ergänzen.",
+      "topic": "Praxen"
+    },
+    {
+      "sentence": "Liebe Ergo - und Physiotherapeuten, macht weiter so!!",
+      "topic": "Ergo- und Physiotherapeuten"
+    },
+    {
+        "sentence": "Und wie es sich lohnt...!",
+        "topic": "es"
+    },
+    {
+        "sentence": "Obwohl die Firma Hummer sich selbst gerade im Umzug befand, wurden alle unsere Wünsche zu unserer vollsten Zufriedenheit umgesetzt.",
+        "topic": "Firma Hummer"
+    },
+    {
+        "sentence": "Wir haben uns Anfang Dez. entschlossen unser Wohn - und Esszimmer vollständig umgestalten zu lassen.",
+        "topic": "Wir"
+    },
+    {
+        "sentence": "Da meine Freundin und ich recht unterschiedliche Ideen hatten, haben wir uns dementsprechend beraten lassen.",
+        "topic": "Freundin und ich"
+    },
+    {
+        "sentence": "Wir haben den gesamten Fußboden erneuert und sämtliche Fenster mit neuen Vorhängen versehen.",
+        "topic": "Wir"
+    },
+    {
+        "sentence": "Das beste ist aber unsere 'neue' Couch.",
+        "topic": "Couch"
+    },
+    {
+        "sentence": "Unsere 'alte Garnitur' haben wir so liebgewonnen, daß wir uns entschlossen hatten sie komplett neu polstern lassen.",
+        "topic": "Garnitur"
+    },
+    {
+        "sentence": "Der Laden ist uns von Freunden empfohlen worden und wir werden diese Empfehlung bestimmt ebenfalls weitergeben.",
+        "topic": "Laden"
+    },
+    {
+        "sentence": "Das cafe ist einfach nur klasse.",
+        "topic": "cafe"
+    },
+    {
+        "sentence": "Ich bin total begeistert seitdem ich das letzte Jahr das erste Mal hier war.",
+        "topic": "Ich"
+    },
+    {
+      "sentence": "Auch das Praxiskonzept mit vielen Ärzten unterschiedlicher Fachrichtungen und Spezialisierungen verhilft zu schneller Hilfe, wenn man sie braucht.",
+      "topic": "Praxiskonzept"
+    },
+    {
+      "sentence": "Sehr teuer und erst im dritten Anlauf haben wir unsere Vorhänge wiederbekommen.",
+      "topic": "Vorhänge"
+    },
+    {
+      "sentence": "Bei einer telefonischen Beschwerde wurde einfach aufgelegt.",
+      "topic": "Beschwerde"
+    },
+    {
+      "sentence": "Wir haben dort einen sehr schönen Abend verbracht!",
+      "topic": "Abend"
+    },
+    {
+      "sentence": "Das Essen war wirklich super und \"ECHT\".",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Nicht wie das typische asiatische Essen, was man für Europäer zubereitet. :-)",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Außerdem ist die Atmosphäre wirklich schön und der Service sehr zuvorkommend.",
+      "topic": "Atmosphäre"
+    },
+    {
+      "sentence": "Wir bekamen ein Begrüßungs - und ein Abschiedsschnaps und ausreichend Reis als Nachschub.",
+      "topic": "Begrüßungsschnaps"
+    },
+    {
+      "sentence": "Es lohnt sich wirklich dort Essen zu gehen!",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Wir hatten unter den Chinarestaurants das Dynasty über die gmaps Bewertungen ausgewählt.",
+      "topic": "Dynasty"
+    },
+    {
+      "sentence": "Unsere Erwartungen wurde nicht enttäuscht!!",
+      "topic": "Erwartungen"
+    },
+    {
+      "sentence": "Wir waren sechs Personen und haben alle das Buffet gewählt.",
+      "topic": "Buffet"
+    },
+    {
+      "sentence": "Dort findet man auf der einen Seite eine große Auswahl an verschiedenen chinesischen Spezialitäten.",
+      "topic": "Auswahl"
+    },
+    {
+      "sentence": "Auf der anderen Seite rohes Fleisch und Fisch, was man sich sofort mit einer noch vorher auszuwählenden Sauce braten lassen kann.",
+      "topic": "Fleisch"
+    },
+    {
+      "sentence": "Eine hervorragende Idee.",
+      "topic": "Idee"
+    },
+    {
+      "sentence": "Es gibt sogar Jakobsmuscheln!!!!",
+      "topic": "Jakobsmuscheln"
+    },
+    {
+      "sentence": "Auch das Sushi ist einwandfrei!",
+      "topic": "Sushi"
+    },
+    {
+      "sentence": "Und zum Nachtisch kann man verschiedene Früchte oder Eis wählen.",
+      "topic": "Nachtisch"
+    },
+    {
+      "sentence": "Überrascht hat uns ein wenig die Caprese (Tomaten und Mozzarella).",
+      "topic": "Caprese"
+    },
+    {
+      "sentence": "Dies ist doch eine italienische Spezialität und hat nichts in einem Chinarestaurant verloren.",
+      "topic": "Spezialität"
+    },
+    {
+      "sentence": "Ebenso zuvorkommend war der Service!",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Das Personal ist sehr nett!",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "Zum Schluss gibt es sogar noch typische chinesische Kitschgeschenke.",
+      "topic": "Kitschgeschenke"
+    },
+    {
+      "sentence": "Ein rundherum schöner Abend.",
+      "topic": "Abend"
+    },
+    {
+      "sentence": "Das Dynasty in Landshut ist wirklich empfehlenswert!",
+      "topic": "Dynasty"
+    },
+    {
+      "sentence": "Dieses Unternehmen bekommt keinen anständigen Privatanschluss hin, was soll das erst mit Geschäftskundenanschlüssen werden.",
+      "topic": "Privatanschluss"
+    },
+    {
+      "sentence": "Ich kann von diesem Unternehmen nur abraten.",
+      "topic": "Unternehmen"
+    },
+    {
+      "sentence": "Was gar nicht geht sind Kundensupport und Beschwerdemanagement.",
+      "topic": "Kundensupport"
+    },
+    {
+      "sentence": "Alles was das Fitnessherz begehrt",
+      "topic": "Fitnessherz"
+    },
+    {
+      "sentence": "Vom Klettern über Sauna bis zu den neusten Geräten alles da was man braucht!",
+      "topic": "Geräte"
+    },
+    {
+      "sentence": "als die billige Fertigsauce auf den Tisch kam, dachte ich erst, das wird nix.",
+      "topic": "Fertigsauce"
+    },
+    {
+      "sentence": "aber dann kam ein toller Salat, leckeres Lamm mit guten Beilagen und nettem Service.",
+      "topic": "Salat"
+    },
+    {
+      "sentence": "Ich war schon bei vielen Steak Restaurants, vor gut 2 Tagen habe ich dieses Steakhaus gefunden.",
+      "topic": "Steakhaus"
+    },
+    {
+      "sentence": "Wer in gepflegter Atmosphäre ein \"echtes\" Steak essen möchte ist hier genau richtig!",
+      "topic": "Steak"
+    },
+    {
+      "sentence": "super freundliches Personal.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "das erlebt man selten.",
+      "topic": "das"
+    },
+    {
+      "sentence": "Produkte wie gewohnt immer ordentlich.",
+      "topic": "Produkte"
+    },
+    {
+      "sentence": "mein Lieblingsrestaurant an der Autobahn.",
+      "topic": "Lieblingsrestaurant"
+    },
+    {
+      "sentence": "Wer richtig professionelles Webdesign und Websoftware sucht, ist hier genau richtig!",
+      "topic": "Webdesign"
+    },
+    {
+      "sentence": "Hr. Bruckner ist sehr bemüht die Kunden zufriedenzustellen.",
+      "topic": "Bruckner"
+    },
+    {
+      "sentence": "Fachkundige, kompetente und sehr freundliche Beratung.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Ausgezeichnetes Angebot.",
+      "topic": "Angebot"
+    },
+    {
+      "sentence": "Eine Werkstatt in der einem nichts aufgeschwätzt wird, sondern nur das repariert wird, was kaputt ist.",
+      "topic": "Werkstatt"
+    },
+    {
+      "sentence": "Außerdem werden vereinbarte Termine auch eingehalten!",
+      "topic": "Termine"
+    },
+    {
+      "sentence": "Die Preise sind teilweise etwas heftig, aber sonst alles toll.",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "Das Personal ist überaus nett und hilfsbereit.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "Es werden oft Zutaten oder Beilagen vergessen.",
+      "topic": "Zutaten"
+    },
+    {
+      "sentence": "Beschwerdebriefe werden ignoriert.",
+      "topic": "Beschwerdebriefe"
+    },
+    {
+      "sentence": "Im Gegensatz zu anderen Filialen deutlich schlechter.",
+      "topic": "Filialen"
+    },
+    {
+      "sentence": "Fragen rund ums Radfahren kompetent beantwortet.",
+      "topic": "Fragen"
+    },
+    {
+      "sentence": "Habe mir 2004 hier mein erstes Rennrad gekauft.",
+      "topic": "Rennrad"
+    },
+    {
+      "sentence": "Meinen 'Flitzer' für 2011 habe ich ebenfalls bei Radsport Wulff gekauft.",
+      "topic": "Flitzer"
+    },
+    {
+      "sentence": "Habe mir auch gleich noch ein Trikot und eine Hose von Wulff zugelegt.",
+      "topic": "Trikot"
+    },
+    {
+      "sentence": "Habe heute online bestellt, ich war erstaunt wie schnell das Essen da war.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Wir haben schon viele Hausgeräte bei MAXX gekauft und können die Firma nur empfehlen.",
+      "topic": "Hausgeräte"
+    },
+    {
+      "sentence": "Auch Freunde und Arbeitskollegen sind immer sehr zufrieden.",
+      "topic": "Freunde"
+    },
+    {
+      "sentence": "Achtung: Stadion - Restaurant, aber dafür sehr gut!",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Absolut unfreundliche Behandlung.",
+      "topic": "Behandlung"
+    },
+    {
+      "sentence": "In Zukunft tanke ich statt Ethanol, Super an anderen Tankstellen - und zwar gerne!!!",
+      "topic": "Ethanol"
+    },
+    {
+      "sentence": "Unser Unternehmen betreibt mehrere kommerzielle Websites, die online im internationalen Wettbewerb stehen.",
+      "topic": "Websites"
+    },
+    {
+      "sentence": "In Google kämpfen Millionen von Konkurrenzseiten um unsere wichtigsten Keywords.",
+      "topic": "Keywords"
+    },
+    {
+      "sentence": "Sehr, sehr guter Supermarkt.",
+      "topic": "Supermarkt"
+    },
+    {
+      "sentence": "Für einen Allrounder geht es eigentlich nicht besser.",
+      "topic": "Allrounder"
+    },
+    {
+      "sentence": "Ich habe die Stadtwerke als kompetenten und zuverlässigen Geschäftspartner kennengelernt und kann mich der ersten Beurteilung in keiner Hinsicht anschließen.",
+      "topic": "Stadtwerke"
+    },
+    {
+      "sentence": "Den Kommentar von unten kann ich nur unterstützen!",
+      "topic": "Kommentar"
+    },
+    {
+      "sentence": "Habe schon viele Pizzen in der Umgebung ausprobiert.",
+      "topic": "Pizzen"
+    },
+    {
+      "sentence": "Leider kein Lieferservice!",
+      "topic": "Lieferservice"
+    },
+    {
+      "sentence": "Am besten gefällt mir die sehr nette, auch persönliche Betreuung.",
+      "topic": "Betreuung"
+    },
+    {
+      "sentence": "Der Abend beim Landgasthof Hagenhoff hatte leider einen bitteren Beigeschmack.",
+      "topic": "Abend"
+    },
+    {
+      "sentence": "Ich hatte ein paar Geschäftsfreunde zum Essen eingeladen.",
+      "topic": "Geschäftsfreunde"
+    },
+    {
+      "sentence": "Sehr kompetente Zahnärztin.",
+      "topic": "Zahnärztin"
+    },
+    {
+      "sentence": "Das Team ist zudem auch sehr zuvorkommend und sympathisch.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Einen Termin bekommt man schnell und man hat kaum Wartezeiten.",
+      "topic": "Termin"
+    },
+    {
+      "sentence": "Ich war Anfang des Jahres auf Ihrem Reiterhof.",
+      "topic": "Reiterhof"
+    },
+    {
+      "sentence": "Schöne Gegend, nette Menschen und gepflegte Pferde.",
+      "topic": "Gegend"
+    },
+    {
+      "sentence": "Ich freue mich auf ein Wiedersehen.",
+      "topic": "Wiedersehen"
+    },
+    {
+      "sentence": "Habe hier letzte Woche Passfotos machen lassen.",
+      "topic": "Passfotos"
+    },
+    {
+      "sentence": "Ich kann dieses Studio nur weiterempfehlen -- super Bilder ohne Gruseleffekt!!!",
+      "topic": "Studio"
+    },
+    {
+      "sentence": "Preis für 4 Bilder: 14,95 und nette Beratung!",
+      "topic": "Preis"
+    },
+    {
+      "sentence": "Meine Bewerbungsfotos sind einfach total super geworden.",
+      "topic": "Bewerbungsfotos"
+    },
+    {
+      "sentence": "Der Service und die Qualität der Bilder hat einfach gestimmt.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Trotzdem ein sehr teures Vergnügen.",
+      "topic": "Vergnügen"
+    },
+    {
+      "sentence": "Die Fotos gehen von der Qualität in Ordnung.",
+      "topic": "Fotos"
+    },
+    {
+      "sentence": "Die Kneipe ist gemütlich und richtig knuffig.",
+      "topic": "Kneipe"
+    },
+    {
+      "sentence": "Das Dart - Spielen ist gesellig, das Bier schmeckt, man kommt mit den Gästen schnell ins Gespräch.",
+      "topic": "Dart-Spielen"
+    },
+    {
+      "sentence": "Ich kenne eigentlich kein besseres Restaurant als dieses.",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Vom Wirt über Speisen und Preise.",
+      "topic": "Wirt"
+    },
+    {
+      "sentence": "Er ist ein super Taxifahrer und immer Pünktlich und nett",
+      "topic": "Taxifahrer"
+    },
+    {
+      "sentence": "Die Anreise mit dem Auto war ganz okay.",
+      "topic": "Anreise"
+    },
+    {
+      "sentence": "Check in war sehr schnell.",
+      "topic": "Check-in"
+    },
+    {
+      "sentence": "Der Park ist recht sauber.",
+      "topic": "Park"
+    },
+    {
+      "sentence": "Das Frühstück ist lecker.",
+      "topic": "Frühstück"
+    },
+    {
+      "sentence": "Aqua Mundo ist einfach PERFEKT.",
+      "topic": "Aqua Mundo"
+    },
+    {
+      "sentence": "Der Park ist Kinder und Behinderten gerecht.",
+      "topic": "Park"
+    },
+    {
+      "sentence": "Wir können den Seeteufel nur empfehlen.",
+      "topic": "Seeteufel"
+    },
+    {
+      "sentence": "Sind zum Kurzurlaub in Duhnen gewesen und fanden aus Zufall ganz am Ende der Strasse im Hafen dieses tolle Restaurant.",
+      "topic": "Restaurant"
+    },
+    {
+      "sentence": "Die Qualität war spitze!",
+      "topic": "Qualität"
+    },
+    {
+      "sentence": "Haben uns dann Fisch zum Mitnehmen bestellt aus der Räucherei.",
+      "topic": "Fisch"
+    },
+    {
+      "sentence": "Wir freuen uns auf ein Wiedersehen jetzt im Dezember.",
+      "topic": "Wiedersehen"
+    },
+    {
+      "sentence": "Sehr kompetenter und freundlicher Meisterbetrieb.",
+      "topic": "Meisterbetrieb"
+    },
+    {
+      "sentence": "Wir waren vier Personen zum Abendessen.",
+      "topic": "Abendessen"
+    },
+    {
+      "sentence": "Keiner von uns kannte dieses kleine Lokal.",
+      "topic": "Lokal"
+    },
+    {
+      "sentence": "Der Hammer sind jedoch die süßen Sachen am Schluss.",
+      "topic": "Sachen"
+    },
+    {
+      "sentence": "Der Schokokuchen ist ja so was von super fein, beinahe hätte ich einen zweiten bestellt.",
+      "topic": "Schokokuchen"
+    },
+    {
+      "sentence": "Service sehr freundlich und korrekt.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Preise fair.",
+      "topic": "Preise"
+    },
+    {
+      "sentence": "Es war einfach ein toller Abend!",
+      "topic": "Abend"
+    },
+    {
+      "sentence": "Hab genug von der Praxis.",
+      "topic": "Praxis"
+    },
+    {
+      "sentence": "Ein richtiges Landgasthaus in dem man sich wohl fuhlt.",
+      "topic": "Landgasthaus"
+    },
+    {
+      "sentence": "Die Behandlung in dieser Praxis ist hervorragend!",
+      "topic": "Behandlung"
+    },
+    {
+      "sentence": "Schwestern und Ärzte überzeugen durch Kompetenz, Freundlichkeit und Aufmerksamkeit.",
+      "topic": "Schwestern"
+    },
+    {
+      "sentence": "Die Praxis ist trotz starker Auslastung sehr zu empfehlen!",
+      "topic": "Praxis"
+    },
+    {
+      "sentence": "Als Patient, auch wenn man noch nicht fortgeschrittenen Alters ist, wie ich fuhlt man sich sehr gut aufgehoben.",
+      "topic": "Patient"
+    },
+    {
+      "sentence": "Vielen Dank daher an das gesamte Team!!!!",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Für Freunde des italienischen Abends.",
+      "topic": "Abends"
+    },
+    {
+      "sentence": "Bitte mit Taxi kommen, wenn ihr den Original Italienischen Wein genießen wollt!",
+      "topic": "Wein"
+    },
+    {
+      "sentence": "Ich hatte einen sehr schönen Abend!",
+      "topic": "Abend"
+    },
+    {
+      "sentence": "Super Saunalandschaft...",
+      "topic": "Saunalandschaft"
+    },
+    {
+      "sentence": "Wird immer alles ordentlich gehalten und gepflegt, was ja heut zu Tage nicht üblich ist!",
+      "topic": "gepflegt"
+    },
+
+    {
+      "sentence": "Die Aussicht ist einmalig, die Einrichtung schön.",
+      "topic": "Aussicht"
+    },
+    {
+      "sentence": "Essen werde ich da nichts mehr.",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Ich habe nur gute Erfahrungen mit der Werkstatt bei Reparaturen und Inspektionen gemacht.",
+      "topic": "Werkstatt"
+    },
+
+    {
+      "sentence": "Es sind nette Leute, fachlich kompetent, zuverlässig und flexibel.",
+      "topic": "Leute"
+    },
+    {
+      "sentence": "Gute Weinauswahl, nette und kompetente Beratung.",
+      "topic": "Weinauswahl"
+    },
+    {
+      "sentence": "Besonders zu empfehlen sind die Weinproben, die alle paar Monate stattfinden.",
+      "topic": "Weinproben"
+    },
+
+    {
+      "sentence": "Ich bin mit dem Kindergarten sehr zufrieden.",
+      "topic": "Kindergarten"
+    },
+    {
+      "sentence": "Die Außeneinrichtung könnten sie vielleicht noch etwas verbessern.",
+      "topic": "Außeneinrichtung"
+    },
+    {
+      "sentence": "Die Erzieher sind alle sehr freundlich und die Kinder anhänglich.",
+      "topic": "Erzieher"
+    },
+    {
+      "sentence": "Beim Mittagsschlaf kann es manchmal zu Schimpereien kommen, weil eigige nicht schlafen wollen.",
+      "topic": "Mittagsschlaf"
+    },
+    {
+      "sentence": "Die Angebote des Essens sind auch gut und man wir immer über den Speiseplan der Woche informiert.",
+      "topic": "Angebote"
+    },
+    {
+      "sentence": "Der Speiseplan ist ausgehängt und fen Paln für den jeweiligen Tag kann man sich inene an einem großen Schild ansehen.",
+      "topic": "Speiseplan"
+    },
+    {
+      "sentence": "Für die Kinder sind dort extra Bilder aufgehängt worden.",
+      "topic": "Bilder"
+    },
+    {
+      "sentence": "Sie bekommen Frühstüch, Mittag und einen Snack.",
+      "topic": "Frühstück"
+    },
+    {
+      "sentence": "Die Kleinen lernen schon frühzeitg Englisch, zum Beispiel hängt am jeweiligen Wochentag der Tag in Englisch da.",
+      "topic": "Englisch"
+    },
+    {
+      "sentence": "Ich war dort erst kürzlich als Praktikantin dort und muss sagen, es hat mir echt gut gefallen.",
+      "topic": "Praktikantin"
+    },
+    {
+      "sentence": "Sehr kompetente und nette Kosmetikerin.",
+      "topic": "Kosmetikerin"
+    },
+    
+    {
+      "sentence": "Meine Wärmepumpenheizung habe ich vor zwei Jahren von der Firma Wachinger installieren lassen.",
+      "topic": "Wärmepumpenheizung"
+    },
+    {
+      "sentence": "Die Montage war tiptop und termingerecht.",
+      "topic": "Montage"
+    },
+    {
+      "sentence": "Die Anlage läuft seitdem sehr zuverlässig.",
+      "topic": "Anlage"
+    },
+    {
+      "sentence": "Bei einer Störung vergangenen Winter konnte mir der Wochenend - Notdienst telefonisch weiterhelfen.",
+      "topic": "Störung"
+    },
+  
+    
+    {
+      "sentence": "Hatte verschiedene Zimmer im EG und im OG.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Die Zimmer waren sauber und gut eingerichtet.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Zusätzlich hatte ich eine Terasse bzw. Balkon.",
+      "topic": "Terasse"
+    },
+    {
+      "sentence": "Der Fernseher hatte leider in beiden Zimmern ein schlechtes Bild.",
+      "topic": "Fernseher"
+    },
+    {
+      "sentence": "Das Restaurant bietet gute bis sehr gute Qualität zu annehmbar.",
+      "topic": "Restaurant"    },
+    {
+      "sentence": "Beim Frühstück war ich dann eher enttäuscht.",
+      "topic": "Frühstück"
+    },
+    {
+      "sentence": "Tische nicht abgeräumt, ewig keinen Kaffe bekommen und die Auswahl eher Durchschnitt.",
+      "topic": "Tische"
+    },
+    {
+      "sentence": "Liegt wahrscheinlich an einer Servicekraft, die das alles garnicht schaffen kann -- schade.",
+      "topic": "Servicekraft"
+    },
+    {
+      "sentence": "Gutes Essen, nette Bedienung und das beste Bier der Stadt!",
+      "topic": "Essen"
+    },
+    {
+      "sentence": "Das Hotel bietet für den Preis keine besonders gute Leistung.",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Zum Frühstück Saft aus Plastikbecher habe ich in den 16 Tagen in Italien nicht erlebt.",
+      "topic": "Saft"
+    },
+    {
+      "sentence": "Keine Eier.",
+      "topic": "Eier"
+    },
+    {
+      "sentence": "Personal nicht gerade freundlich.",
+      "topic": "Personal"
+    },
+    {
+      "sentence": "Lage ist jedoch gut.",
+      "topic": "Lage"
+    },
+    {
+      "sentence": "Nahe am Stadtzentrum und eine schönen Ausblick.",
+      "topic": "Stadtzentrum"
+    },
+    {
+      "sentence": "Die Bettdecke schaut man sich lieber nicht von unten an.",
+      "topic": "Bettdecke"
+    },
+
+    {
+      "sentence": "Nette Beratung, Umfangreiches Sortiment und viele Artikel die Ich vorher nicht kannte!",
+      "topic": "Sortiment"
+    },
+    {
+      "sentence": "Ich habe mich für Partynasenbecher und Gebisseiswürfelformen entschieden!",
+      "topic": "Partynasenbecher"
+    },
+    {
+      "sentence": "Damit lag ich auch genau richtig!",
+      "topic": "Damit"
+    },
+    {
+      "sentence": "Sehr schickes Geschäft mit einzigartigen Geschenken!",
+      "topic": "Geschäft"
+    },
+    {
+      "sentence": "Ein absolutes Highlight für jung und alt.",
+      "topic": "Highlight"
+    },
+    {
+      "sentence": "Sehr gute Beratung aber nicht aufdringlich.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "In Frankfurt sollte mehr solcher Neueröffnungen geben!",
+      "topic": "Neueröffnungen"
+    },
+    {
+      "sentence": "Ich bin eigentlich nur durch Zufall dran vorbeigekommen und war total überrascht.",
+      "topic": "Zufall"
+    },
+    {
+      "sentence": "Echt tolle Geschenkideen, jede Menge ausgefallene Artikel und wirklich nette Bedienung.",
+      "topic": "Geschenkideen"
+    },
+    {
+      "sentence": "Und meine meine Weihnachtsgeschenke kaufe ich auch da!",
+      "topic": "Weihnachtsgeschenke"
+    },
+    {
+      "sentence": "StyleOn.de kannte ich schon aus dem Internet, aber so ein Laden ist halt doch noch mal besser.",
+      "topic": "Laden"
+    },
+    {
+      "sentence": "Das Sortiment ist wohl einmalig in Frankfurt.",
+      "topic": "Sortiment"
+    },
+    {
+      "sentence": "Jetzt ist man beim Geschenke finden nicht mehr überfragt.",
+      "topic": "Geschenke"
+    },
+    {
+      "sentence": "Beim Styleon.de concept store findet man wirklich die ausgefallensten Sachen.",
+      "topic": "store"
+    },
+    {
+      "sentence": "Qualität und Preise stimmen auch!",
+      "topic": "Qualität"
+    },
+    {
+      "sentence": "Fazit: Reinschauen lohnt sich!",
+      "topic": "Fazit"
+    },
+    {
+      "sentence": "Direkt neben dem großen neuen REWE in Bornheim hat vor Kurzem der Shop von Styleon aufgemacht.",
+      "topic": "Shop"
+    },
+    {
+      "sentence": "Dort findet man sehr ausgefallene, kreative und vor allem lustige Geschenkideen.",
+      "topic": "Geschenkideen"
+    },
+    {
+      "sentence": "Aber auch nette Dinge für die Wohnung: Deko, Accessoires etc.",
+      "topic": "Dinge"
+    },
+    {
+      "sentence": "Das Stöbern macht wirklich Spaß und irgendwas findet man immer.",
+      "topic": "Stöbern"
+    },
+    {
+      "sentence": "Ideal vor Weihnachten oder dem nächsten Geburtstag.",
+      "topic": "Weihnachten"
+    },
+    {
+      "sentence": "Das Ambiente stimmt, die Verkäufer sind nett.",
+      "topic": "Ambiente"
+    },
+    {
+      "sentence": "Von mir gibt es deshalb 5 Sterne!",
+      "topic": "Sterne"
+    },
+    {
+      "sentence": "Wir kommen gerne wieder.",
+      "topic": "Wir"
+    },
+    {
+      "sentence": "Super Service, sehr freundliches Personal.",
+      "topic": "Service"
+    },
+    {
+      "sentence": "Da leiht man doch gleich noch mehr Filme aus als nur einen.",
+      "topic": "Filme"
+    },
+    {
+      "sentence": "Wie mein Vorposter bereits erwähnt hat, wird hier sehr groß auf den Kundenservice geachtet.",
+      "topic": "Kundenservice"
+    },
+    {
+      "sentence": "Kennen sie noch das alte Andria in Springe?",
+      "topic": "Andria"
+    },
+    {
+      "sentence": "Was sich geändert hat?",
+      "topic": "Was"
+    },
+    {
+      "sentence": "Ist aber mein Gefühl, macht euch selbst ein Bild!",
+      "topic": "Gefühl"
+    },
+    {
+      "sentence": "Eine vernünftige Beratung gab es leider auch nicht.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Kann ich absolut nicht empfehlen.",
+      "topic": "Kann"
+    },
+    {
+      "sentence": "Alle konnten vor Ort sich den Entwurf anschauen.",
+      "topic": "Entwurf"
+    },
+    {
+      "sentence": "Es ist eine Super - Website.",
+      "topic": "Website"
+    },
+    {
+      "sentence": "Nie wieder ins \"Hotel am Rathaus\"!",
+      "topic": "Hotel"
+    },
+    {
+      "sentence": "Unser Gepäck bekamen wir erst gegen Zahlung von 50,00 € wieder.",
+      "topic": "Gepäck"
+    },
+    {
+      "sentence": "Das war eine Frechheit!",
+      "topic": "Frechheit"
+    },
+    {
+      "sentence": "Eine schön gestaltete Strandbar wo man sich gut entspannen kann.",
+      "topic": "Strandbar"
+    },
+    {
+      "sentence": "Hätten wir es mal angenommen, da unser Zimmer eine Aussicht in die Hotel - Beton - Wüste hatte.",
+      "topic": "Zimmer"
+    },
+    {
+      "sentence": "Die Sauberkeit des Zimmers ist positiv zu vermerken.",
+      "topic": "Sauberkeit"
+    },
+    {
+      "sentence": "Hier hört das Lob auf.",
+      "topic": "Lob"
+    },
+    {
+      "sentence": "Bester Eintrag und richtige Positionierung der Firma bei Google Maps.",
+      "topic": "Firma"
+    },
+    {
+      "sentence": "Das scheint ein Programmfehler von Google - Maps oder so zu sein.",
+      "topic": "Programmfehler"
+    },
+    {
+      "sentence": "Ich möchte mich für die Hilfe des Teams der Mentor Coaching bedanken.",
+      "topic": "Hilfe"
+    },
+    {
+      "sentence": "2009 bin ich zu dem Unternehmen Mentor Coaching gekommen.",
+      "topic": "Unternehmen"
+    },
+    {
+      "sentence": "Jedoch wurde mir sehr schnell klar, das ich hier, genau den richtigen Partner gefunden habe.",
+      "topic": "Partner"
+    },
+    {
+      "sentence": "Alle Empfehlungen wurden mir Praxisorientiert nahe gelegt und sind genau so eingetroffen.",
+      "topic": "Empfehlungen"
+    },
+    {
+      "sentence": "Da kann ich nur noch DANKE sagen!!!",
+      "topic": "DANKE"
+    },
+    {
+      "sentence": "Wir bedanken uns nachhaltig für die kompetente Beratung des Teams der Mentor - Coaching.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Für Ihre Hilfe einer Existenzfestigungsberatung.",
+      "topic": "Hilfe"
+    },
+    {
+      "sentence": "Wir werden uns auch in Zukunft einer weiterführenden Beratung durch die Mentor - Coaching unterziehen und uns somit im Markt etablieren.",
+      "topic": "Beratung"
+    },
+    {
+      "sentence": "Ich kann das Team nur wärmstens weiterempfehlen.",
+      "topic": "Team"
+    },
+    {
+      "sentence": "Ich möchte mich noch mal für Ihre Leistungen bedanken.",
+      "topic": "Leistungen"
+    },
+    {
+      "sentence": "Ich wünsche Ihnen weiterhin alles gute.",
+      "topic": "gute"
+    },
+    {
+      "sentence": "Inzwischen lebt sie wesentlich selbstbestimmter und froher auch wenn es lange dauert bis sie regeneriert.",
+      "topic": "sie"
+    },
+    {
+      "sentence": "Dabei hatte ich dem Polizisten erklärt, dass der Fahrradfahrer der Autofahrerin die Vorfahrt genommen hat.",
+      "topic": "Polizisten"
+    },
+    {
+      "sentence": "Der Polizist teilte mir mit, dass er die Situation durchaus selber beurteilen kann, was mich sehr verwunderte, er war ja nicht dabei.",
+      "topic": "Polizist"
+    },
+    {
+      "sentence": "Danach wurden unsere Personalien aufgenommen.",
+      "topic": "Personalien"
+    },
+    {
+      "sentence": "Ich komme ursprünglich aus Kasachstan.",
+      "topic": "Kasachstan"
+    }]
+
+
+          
+          
+            
+
+      
+      
 
 
 
@@ -835,46 +2720,14 @@ data = [
 
 
 
-
-#save_file = open("chatgpt_german_data.json", "w", encoding='utf-8')  
-#json.dump(data, save_file)  
-#save_file.close() 
+save_file = open("UD_german_data.json", "w", encoding='utf-8')  
+json.dump(data_UD, save_file)  
+save_file.close() 
 
 
 
 #exit()
-def topic_pos(data):
-    l_data_with_pos = []
-    for i,d in enumerate(data):
-        if i>4:
-            break
-        l_sent_split = d["sentence"].split()
-        #print(l_sent_split)
-        l_sent_split[-1] = l_sent_split[-1][:-1] #remove end ponctuation
-        try:
-            pos = l_sent_split.index(d["topic"])
-        except ValueError:
-            pos = None
-        if pos!=None:
-            d["topic_idx"] = pos
-            d["sent_len"] = len(l_sent_split)
-        #print(d)
-        l_data_with_pos.append(d)
-    return l_data_with_pos
 
-
-def gpt_to_list_for_hug_format(data, idx_shift = 0):
-    l_data_with_pos = topic_pos(data)
-    l_sent_train,l_labels_train, l_id_train = [], [], []
-    for i,d in enumerate(l_data_with_pos):
-        l_sent_train.append(d["sentence"])
-        l_id_train.append(i+idx_shift)
-        labels = [0]*d["sent_len"]
-        print()
-        labels[d["topic_idx"]] = 1
-        l_labels_train.append(labels)
-    
-    return l_sent_train,l_labels_train, l_id_train
 
 #print(gpt_to_list_for_hug_format(data))
 

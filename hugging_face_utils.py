@@ -6,7 +6,7 @@ from transformers import DataCollatorForTokenClassification
 from transformers import AutoTokenizer, BertForTokenClassification
 import numpy as np
 import neptune
-from read_xml import get_data
+from read_xml import get_data_jap, get_data_pcc2
 from transformers.integrations import NeptuneCallback
 from datasets.dataset_dict import DatasetDict
 from datasets import Dataset
@@ -14,7 +14,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 import argparse
 import json
-from gpt_data import gpt_to_list_for_hug_format
+from UD_dict import gpt_to_list_for_hug_format
 
 
 
@@ -35,16 +35,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float)
 parser.add_argument('--test_tag', type=str, default="all")
 parser.add_argument('--train_tag', type=str, default="all")
+parser.add_argument('--lang', type=str, default="jap")
 args = parser.parse_args()
 lr = args.lr
 test_tag = args.test_tag
 train_tag = args.train_tag
+lang = args.lang
 
 if debug:
     nept = False
     pcc2_data_folder = "pcc2_data_debug"
     data_max_lenght_file = 600
-    data_max_lenght_sent = 80
+    data_max_lenght_sent = 40
     nb_epochs = 2
     batch_size = 2
     #lr = 10e-3
@@ -55,8 +57,8 @@ if debug:
 else: 
     pcc2_data_folder = "pcc2_data"
     data_max_lenght_file = 600
-    data_max_lenght_sent = 80 #max nb of tokens in a sentence
-    nb_epochs = 80
+    data_max_lenght_sent = 40 #max nb of tokens in a sentence
+    nb_epochs = 50
     batch_size = 64
     #lr = 5e-6
     weight_decay = 0.01
@@ -65,17 +67,18 @@ else:
 
 
 
-def tokenize_and_align_labels(data,hug = False):
+def tokenize_and_align_labels(data,lang,hug = False):
     """
     get: one or several exemples of the form: dict of id (str), tokens(list of str), (pos_)tag(list of int)
     returns a dict with as keys:
             'input_ids': list (of list if several exemples) of tokens
             "attention masks"
             "labels": list (of list if several exemples) of aligned labels
-
     """
-    tokenized_inputs = tokenizer(data["tokens"], is_split_into_words=False)
-
+    if lang == "jap":
+        tokenized_inputs = tokenizer(data["tokens"], is_split_into_words=True)
+    else:
+        tokenized_inputs = tokenizer(data["tokens"], is_split_into_words=True)
     labels = []
     if hug:
         tag = "ner_tags"
@@ -85,8 +88,11 @@ def tokenize_and_align_labels(data,hug = False):
         word_ids = tokenized_inputs.word_ids(batch_index=i)
         previous_word_idx = None
         label_ids = []
+        print("len lab",len(label))
+        #print("word_id",word_ids[i])
         
         for word_idx in word_ids:
+            print("word_idx",word_idx)
             # Special tokens have a word id that is None. We set the label to -100 so they are automatically
             # ignored in the loss function.
             if word_idx is None:
@@ -106,12 +112,19 @@ def tokenize_and_align_labels(data,hug = False):
         #print("word_ids",word_ids)
         #print("aligned labels",label_ids )
         #exit()
+   
 
     tokenized_inputs["labels"] = labels
     return tokenized_inputs
 
-def hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half,gpt_aug_data=False):
-    l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half)
+def hug_data_format(lang,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half,gpt_aug_data=False):
+    if lang == "ger":
+        pcc2_data_folder = "pcc2_data"
+        l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data_pcc2(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half)
+    if lang == "jap":
+        l_sent_train,l_labels_train, l_id_train, l_sent_test,l_labels_test, l_id_test = get_data_jap(data_max_lenght_sent,l_tags_train,l_tags_test)
+        print(l_sent_train[0])
+        print(l_labels_train[0])
     if gpt_aug_data:
         with open('chatgpt_german_data.json') as f:
             l_gpt_data = json.load(f)
@@ -179,23 +192,29 @@ def compute_metrics(p):
 #print(type(datasets_hug))
 #l_tags_train = ["NN","NE","PPER","PDS"]
 #l_tags_test = ["NN","NE","PPER","PDS"]
-d_tag = {"all":["NN","NE","PPER","PDS"], "nouns": ["NN"], "pnouns": ["NE"],"ppronouns":["PPER"],"dpronouns":["PDS"]}
+#d_tag = {"all":["NN","NE","PPER","PDS"], "nouns": ["NN"], "pnouns": ["NE"],"ppronouns":["PPER"],"dpronouns":["PDS"]}
+
+
+
+if lang == "jap":
+    d_tag = {"all":["NOUN","PROPN","PRON"], "nouns": ["NOUN"], "pnouns": ["PROPN"],"ppronouns":["PRON"],"dpronouns":["PRON"]}
+if lang == "ger":
+    d_tag = {"all":["NN","NE","PPER","PDS"], "nouns": ["NN"], "pnouns": ["NE"],"ppronouns":["PPER"],"dpronouns":["PDS"]}
 l_tags_test = d_tag[test_tag]
 l_tags_train = d_tag[train_tag]
 
 half_dataset = False
 if half_dataset:
     print("Warning, only trained on half the dataset!")
-datasets= hug_data_format(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half_dataset,gpt_aug_data)
-print(type(datasets))
+datasets= hug_data_format(lang,data_max_lenght_sent,data_max_lenght_file,l_tags_train,l_tags_test,half_dataset,gpt_aug_data)
+
 #exit()
-print("pcc2 dataset loaded")
+print("dataset loaded")
 metric = load_metric("seqeval")
 assert isinstance(tokenizer, transformers.PreTrainedTokenizerFast)
 #print(tokenize_and_align_labels(datasets['train'][:5]))
 
-tokenized_datasets = datasets.map(tokenize_and_align_labels, batched=True)
-#exit()
+tokenized_datasets = datasets.map(lambda x: tokenize_and_align_labels(x, lang),batched=True)
 
 
 neptune_callback = NeptuneCallback(

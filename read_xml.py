@@ -8,6 +8,7 @@ from torcheval.metrics.functional import multiclass_f1_score
 from sklearn.metrics import precision_recall_fscore_support
 import json
 import random
+from UD_dict import get_dict_jap_topic
 
 
 #tree = ET.parse('52FRF-G38GNT-07M0400.xml')
@@ -30,7 +31,33 @@ def detach_and_flatten(l_tensor):
         #print(n_pred)
     return n_pred
 
-def get_data(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_test,half=False):
+
+def get_data_jap(label_lenght,l_tags_train,l_tags_test):
+    train_file = "UD_Japanese-GSD/ja_gsd-ud-train.conllu"
+    test_file = "UD_Japanese-GSD/ja_gsd-ud-test.conllu"
+    d_train = get_dict_jap_topic(train_file,l_tags_train,label_lenght)
+    d_test = get_dict_jap_topic(test_file,l_tags_test,label_lenght)
+    l_sent_train,l_labels_train,l_id_train =  jap_dict_in_l(d_train)
+    l_sent_test,l_labels_test,l_id_test = jap_dict_in_l(d_test)
+    return l_sent_train,l_labels_train,l_id_train, l_sent_test,l_labels_test,l_id_test
+
+
+def jap_dict_in_l(d):
+    l_sent = []
+    l_labels = []
+    l_idx = []
+
+    for idx,elem in enumerate(d.keys()):
+        
+        l_sent.append(d[elem]["word_list"])
+        l_labels.append(d[elem]["labels"])
+        l_idx.append(idx)
+    return l_sent,l_labels,l_idx
+    
+
+
+
+def get_data_pcc2(pcc2_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_test,half=False):
     #list of labels is same size, with 0,1,-100
     #list of sentences only
 
@@ -606,9 +633,9 @@ def gpt_prompts(l_tags,file,data_max_lenght_file,data_max_lenght_sent):
     
 
 
-file = "pcc2_data/maz-2609.exb"
+#file = "pcc2_data/maz-2609.exb"
 
-pcc_data_folder = "pcc2_data"
+#pcc_data_folder = "pcc2_data"
 
 #l_tok = token_list(file,2,8)
 #print(l_tok)
@@ -616,9 +643,9 @@ pcc_data_folder = "pcc2_data"
 
 
 
-data_max_lenght_file = 7
-data_max_lenght_sent = 7
-l_tags_train = ["NN","NE","PPER"]
+#data_max_lenght_file = 7
+#data_max_lenght_sent = 7
+#l_tags_train = ["NN","NE","PPER"]
 """
 sent,d_sent = get_d_sentence_pcc2(file)
 labels,nb_zeros, nb_ones = create_label_list(file,data_max_lenght,1,1,l_tags)
@@ -629,14 +656,19 @@ print(l_lab)
 #print(gpt_prompts(l_tags,file,500,80))
 
 
-labels = create_label_list(file,data_max_lenght_file,l_tags_train)
-ll_sent_train, ll_lab_train, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
+#labels = create_label_list(file,data_max_lenght_file,l_tags_train)
+#ll_sent_train, ll_lab_train, max_lenght_one = cut_data_into_sentences(file,labels,data_max_lenght_sent)
 #print(labels)
 #print(ll_sent_train, ll_lab_train, max_lenght_one)
 
-l_files = os.listdir(pcc_data_folder)
-#print(len(l_files))
+#l_files = os.listdir(pcc_data_folder)
+##print(len(l_files))
 
-l1,l2,l3,l4,l5,l6 = get_data(pcc_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_train,half=False)
-print (l1[:15])
-print(l2[:15])
+#l1,l2,l3,l4,l5,l6 = get_data_pcc2(pcc_data_folder,data_max_lenght_sent,data_max_lenght_file,l_tags_train, l_tags_train,half=False)
+#print (l1[:15])
+#print(l2[:15])
+
+#l1,l2,l3,l4,l5,l6 = get_data_jap(5,["NOUN"],False)
+
+#print(l1[:15])
+#print(l2[:15])
